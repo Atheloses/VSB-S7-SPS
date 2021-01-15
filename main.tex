@@ -12,10 +12,6 @@
 
 \SubmissionDate{3. ledna 2021}
 
-%\ThesisAssignmentImagePath{Figures/Assignment}
-
-%\AuthorDeclarationImageFile{Figures/AuthorDeclaration.jpg}
-
 \CzechAbstract{SPS}
 
 \CzechKeywords{SPS}
@@ -98,91 +94,119 @@
 
 \subsection{IPv4}
 \label{subsec:Sec041}
-\noindent Global subnets
+\noindent Klient/server
 \begin{center}
 	\begin{tabular}{l|l|l}
-		Název & Číslo & Popis \\
+		Name & Network address & Description \\
 		\hline
-		Klient 101 & 101 & \\
-		Klient 102 & 102 & \\
+		VLAN 101 & 44.9.0.0/25 & Client VLAN 1\\
+		VLAN 102 & 44.9.0.128/26 & Client VLAN 2\\
+		VLAN 103 & 44.9.0.192/28 & Client VLAN 3\\
+		Client 1 & 44.9.1.0/25 & First client subnet\\
+		... & ... & ...\\
+		Client 200 & 44.9.100.128/25 & Last client subnet\\
+		... & ... & ...\\
+		Server 1 & 44.9.222.0/25 & First server subnet\\
+		... & ... & ...\\
+		Server 50 & 44.9.246.128/25 & Last server subnet\\
+		VLAN 301 & 44.9.247.0/25 & Server VLAN 1\\
+		VLAN 302 & 44.9.247.128/26 & Server VLAN 2\\
+		VLAN 303 & 44.9.247.192/28 & Server VLAN 3\\
 	\end{tabular}
 \end{center}
 
-\noindent Global loopbacks
+\noindent Global
 \begin{center}
-	\begin{tabular}{l|l|l}
-		Název & Číslo & Popis \\
+	\begin{tabular}{l|l|l|l|l}
+		Name & Network address & First address & Second address & Description \\
 		\hline
-		Klient 101 & 101 & \\
-		Klient 102 & 102 & \\
+		R1-WAN1 & 44.9.248.0/31 & 44.9.248.0 & 44.9.248.1 & IC Link \\
+		%TODO
+		\hline
+		DLSW1 & 44.9.254.0/32 & 44.9.254.0 & - & Loopback0 \\
+		%TODO
 	\end{tabular}
 \end{center}
 
-\noindent Klient/server subnets
+\noindent Management 
 \begin{center}
-	\begin{tabular}{l|l|l}
-		Název & Číslo & Popis \\
+	\begin{tabular}{l|l|l|l|l}
+		Name & Network address & First address & Second address & Description \\
 		\hline
-		Klient 101 & 101 & \\
-		Klient 102 & 102 & \\
+		R1-WAN1 & 44.9.253.248/31 & 44.9.253.248 & 44.9.253.249 & IC Link \\
+		R1-WAN2 & 44.9.253.250/31 & 44.9.253.250 & 44.9.253.251 & IC Link \\
+		R2-WAN1 & 44.9.253.252/31 & 44.9.253.252 & 44.9.253.253 & IC Link \\
+		R2-WAN2 & 44.9.253.254/31 & 44.9.253.254 & 44.9.253.255 & IC Link \\
+		\hline
+		VRRP & 44.9.252.0/24 & 44.9.252.1 & - & R1 \& R2 virtual \\
+		R1 & 44.9.252.0/24 & 44.9.252.2 & - & Adress on interface \\
+		R2 & 44.9.252.0/24 & 44.9.252.3 & - & Adress on interface \\
+		DLSW1 & 44.9.252.0/24 & 44.9.252.4 & - & VLAN 18 \\
+		DLSW2 & 44.9.252.0/24 & 44.9.252.5 & - & VLAN 18 \\
+		ALSW1 & 44.9.252.0/24 & 44.9.252.6 & - & VLAN 18 \\
+		TEST PC & 44.9.252.0/24 & 44.9.252.20 & - & VLAN 18 \\
+		\hline
+		R1 & 44.9.253.244/32 & 44.9.253.244 & - & Loopback1 \\
+		R2 & 44.9.253.245/32 & 44.9.253.245 & - & Loopback1 \\
+		WAN1 & 44.9.253.246/32 & 44.9.253.246 & - & Loopback1 \\
+		WAN2 & 44.9.253.247/32 & 44.9.253.247 & - & Loopback1 \\
 	\end{tabular}
 \end{center}
 
-\noindent Management subnets
-\begin{center}
-	\begin{tabular}{l|l|l}
-		Název & Číslo & Popis \\
-		\hline
-		Klient 101 & 101 & \\
-		Klient 102 & 102 & \\
-	\end{tabular}
-\end{center}
-
-\noindent Management loopbacks
-\begin{center}
-	\begin{tabular}{l|l|l}
-		Název & Číslo & Popis \\
-		\hline
-		Klient 101 & 101 & \\
-		Klient 102 & 102 & \\
-	\end{tabular}
-\end{center}
 
 \InsertFigure{Figures/Addressing/IPv4.png}{0.75\textwidth}{IPv4 addressing}
 \InsertFigure{Figures/Addressing/IPv4MGMT.png}{0.75\textwidth}{IPv4 management addressing}
 
 \subsection{IPv6}
 \label{subsec:Sec042}
-
-\noindent Global subnets
+\noindent Klient/server
 \begin{center}
 	\begin{tabular}{l|l|l}
-		Název & Číslo & Popis \\
+		%TODO predelat na IPV6
+		Name & Network address & Description \\
 		\hline
-		Klient 101 & 101 & \\
-		Klient 102 & 102 & \\
+		VLAN 101 & 44.9.0.0/25 & Client VLAN 1\\
+		VLAN 102 & 44.9.0.128/26 & Client VLAN 2\\
+		VLAN 103 & 44.9.0.192/28 & Client VLAN 3\\
+		Client 1 & 44.9.1.0/25 & First client subnet\\
+		... & ... & ...\\
+		Client 200 & 44.9.100.128/25 & Last client subnet\\
+		... & ... & ...\\
+		Server 1 & 44.9.222.0/25 & First server subnet\\
+		... & ... & ...\\
+		Server 50 & 44.9.246.128/25 & Last server subnet\\
+		VLAN 301 & 44.9.247.0/25 & Server VLAN 1\\
+		VLAN 302 & 44.9.247.128/26 & Server VLAN 2\\
+		VLAN 303 & 44.9.247.192/28 & Server VLAN 3\\
 	\end{tabular}
 \end{center}
 
-\noindent Global loopbacks
+\noindent Management 
 \begin{center}
-	\begin{tabular}{l|l|l}
-		Název & Číslo & Popis \\
+	\begin{tabular}{l|l|l|l|l}
+		%TODO predelat na IPV6
+		Name & Network address & First address & Second address & Description \\
 		\hline
-		Klient 101 & 101 & \\
-		Klient 102 & 102 & \\
+		R1-WAN1 & 44.9.253.248/31 & 44.9.253.248 & 44.9.253.249 & IC Link \\
+		R1-WAN2 & 44.9.253.250/31 & 44.9.253.250 & 44.9.253.251 & IC Link \\
+		R2-WAN1 & 44.9.253.252/31 & 44.9.253.252 & 44.9.253.253 & IC Link \\
+		R2-WAN2 & 44.9.253.254/31 & 44.9.253.254 & 44.9.253.255 & IC Link \\
+		\hline
+		VRRP & 44.9.252.0/24 & 44.9.252.1 & - & R1 \& R2 virtual \\
+		R1 & 44.9.252.0/24 & 44.9.252.2 & - & Adress on interface \\
+		R2 & 44.9.252.0/24 & 44.9.252.3 & - & Adress on interface \\
+		DLSW1 & 44.9.252.0/24 & 44.9.252.4 & - & VLAN 18 \\
+		DLSW2 & 44.9.252.0/24 & 44.9.252.5 & - & VLAN 18 \\
+		ALSW1 & 44.9.252.0/24 & 44.9.252.6 & - & VLAN 18 \\
+		TEST PC & 44.9.252.0/24 & 44.9.252.20 & - & VLAN 18 \\
+		\hline
+		R1 & 44.9.253.244/32 & 44.9.253.244 & - & Loopback1 \\
+		R2 & 44.9.253.245/32 & 44.9.253.245 & - & Loopback1 \\
+		WAN1 & 44.9.253.246/32 & 44.9.253.246 & - & Loopback1 \\
+		WAN2 & 44.9.253.247/32 & 44.9.253.247 & - & Loopback1 \\
 	\end{tabular}
 \end{center}
 
-\noindent Klient/server subnets
-\begin{center}
-	\begin{tabular}{l|l|l}
-		Název & Číslo & Popis \\
-		\hline
-		Klient 101 & 101 & \\
-		Klient 102 & 102 & \\
-	\end{tabular}
-\end{center}
 
 \InsertFigure{Figures/Addressing/IPv6.png}{0.75\textwidth}{IPv6 addressing}
 
