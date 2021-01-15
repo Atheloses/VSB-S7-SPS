@@ -1,0 +1,101 @@
+en
+conf t
+no ip domain-lookup
+hostname DLSW2
+line con 0
+logging synchronous
+exec-timeout 0 0
+spanning-tree mode rapid-pvst
+spanning-tree vlan 101-103 root secondary
+spanning-tree vlan 301-303 root primary
+
+vrf definition MGMT
+address-family ipv4
+exit-address-family
+address-family ipv6
+exit-address-family
+
+vlan 18
+name MA
+
+int vlan 18
+description VRF-MGMT
+vrf forwarding MGMT
+ip address 44.9.252.5 255.255.255.0
+no shut
+
+vlan 101
+name klient101
+
+vlan 102
+name klient102
+
+vlan 103
+name klient103
+
+vlan 301
+name server301
+
+vlan 302
+name server302
+
+vlan 303
+name server303
+
+vlan 998
+name unused
+
+vlan 999
+name native
+
+int gi0/0
+switchport trunk encapsulation dot1q
+switchport mode trunk
+switchport trunk allowed vlan 998
+switchport trunk native vlan 999
+no shut
+
+int gi0/1
+description DLSW2-R2
+switchport trunk encapsulation dot1q
+switchport mode trunk
+switchport trunk allowed vlan 18,101-103,301-303,999
+switchport trunk native vlan 999
+
+int range gi0/2-3
+channel-group 1 mode active
+
+interface Port-Channel 1
+description DLSW2-DLSW1
+switchport trunk encapsulation dot1q
+switchport mode trunk
+switchport trunk allowed vlan 18,101-103,301-303,999
+switchport trunk native vlan 999
+
+int gi1/0
+description DLSW2-ALSW1
+spanning-tree vlan 101-103 cost 5
+spanning-tree vlan 301-303 cost 20
+switchport trunk encapsulation dot1q
+switchport mode trunk
+switchport trunk allowed vlan 18,101-103,301-303,999
+switchport trunk native vlan 999
+
+int loopback0
+description loopback
+ip address 44.9.254.1 255.255.255.255
+ipv6 address 2001:9999::401/128
+
+access-list 1 permit any
+username grp9 password cisco
+enable password cisco
+ip domain name sps.local
+crypto key generate rsa
+
+line vty 0 4
+password cisco
+access-class 1 in vrf-also
+login local
+transport input telnet ssh
+
+exit

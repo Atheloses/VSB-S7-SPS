@@ -1,0 +1,334 @@
+\documentclass[czech,master,dept460,male,cpp,cpdeclaration]{diploma}
+\usepackage[autostyle=true,czech=quotes]{csquotes}
+\usepackage[backend=biber, style=iso-numeric, alldates=iso]{biblatex}
+\usepackage{dcolumn}
+\usepackage{subfig}
+
+\ThesisAuthor{Martin Pustka, Vadim Karačencev}
+
+\CzechThesisTitle{SPS - Semestrální projekt}
+
+\EnglishThesisTitle{SPS - Semestral project}
+
+\SubmissionDate{3. ledna 2021}
+
+%\ThesisAssignmentImagePath{Figures/Assignment}
+
+%\AuthorDeclarationImageFile{Figures/AuthorDeclaration.jpg}
+
+\CzechAbstract{SPS}
+
+\CzechKeywords{SPS}
+
+\EnglishAbstract{SPS}
+
+\EnglishKeywords{SPS}
+
+\newcolumntype{d}[1]{D{,}{,}{#1}}
+
+\begin{document}
+
+\MakeTitlePages
+
+\section{Plán číslování VLAN a implementace VLAN}
+\label{sec:Sec01}
+\begin{tabular}{l|l|l}
+	Název & Číslo & Popis \\
+	\hline
+	Klient 101 & 101 & \\
+	Klient 102 & 102 & \\
+	Klient 103 & 103 & \\
+	Klient 301 & 301 & \\
+	Klient 302 & 301 & \\
+	Klient 303 & 303 & \\
+	g & 9 & datový provoz\\
+	M & 91 & management VRF\\
+	MA & 18 & management VRF\\
+	unused & 998 & nevyužité porty \\
+	native & 999 & nativní \\
+\end{tabular}
+
+\newpage
+\section{L2 v access a distribuční vrstvě}
+\label{sec:Sec02}
+
+\subsection{VLANs}
+\label{subsec:Sec021}
+\noindent do sh vlan
+\InsertFigure{Figures/VLAN/ALSW1.png}{0.75\textwidth}{ALSW1 VLANs}
+\InsertFigure{Figures/VLAN/DLSW1.png}{0.75\textwidth}{DLSW1 VLANs}
+\InsertFigure{Figures/VLAN/DLSW2.png}{0.75\textwidth}{DLSW2 VLANs}
+
+\subsection{Trunks}
+\label{subsec:Sec022}
+\noindent do sh int trunk
+\InsertFigure{Figures/Trunk/ALSW1.png}{0.75\textwidth}{ALSW1 Trunks}
+\InsertFigure{Figures/Trunk/DLSW1.png}{0.75\textwidth}{DLSW1 Trunks}
+\InsertFigure{Figures/Trunk/DLSW2.png}{0.75\textwidth}{DLSW2 Trunks}
+
+\subsection{LACP}
+\label{subsec:Sec023}
+\noindent do sh etherchannel summary
+\InsertFigure{Figures/LACP/SW1.png}{0.75\textwidth}{DLSW1 LACP}
+\InsertFigure{Figures/LACP/SW2.png}{0.75\textwidth}{DLSW2 LACP}
+
+\newpage
+\section{Spanning Tree}
+\label{sec:Sec03}
+\noindent do sh spanning-tree
+\InsertFigure{Figures/SPT/ALSW1_1.png}{0.75\textwidth}{ALSW1 SPT 1/5}
+\InsertFigure{Figures/SPT/ALSW1_2.png}{0.75\textwidth}{ALSW1 SPT 2/5}
+\InsertFigure{Figures/SPT/ALSW1_3.png}{0.75\textwidth}{ALSW1 SPT 3/5}
+\InsertFigure{Figures/SPT/ALSW1_4.png}{0.75\textwidth}{ALSW1 SPT 4/5}
+\InsertFigure{Figures/SPT/ALSW1_5.png}{0.75\textwidth}{ALSW1 SPT 5/5}
+\InsertFigure{Figures/SPT/DLSW1_1.png}{0.75\textwidth}{DLSW1 SPT 1/5}
+\InsertFigure{Figures/SPT/DLSW1_2.png}{0.75\textwidth}{DLSW1 SPT 2/5}
+\InsertFigure{Figures/SPT/DLSW1_3.png}{0.75\textwidth}{DLSW1 SPT 3/5}
+\InsertFigure{Figures/SPT/DLSW1_4.png}{0.75\textwidth}{DLSW1 SPT 4/5}
+\InsertFigure{Figures/SPT/DLSW1_5.png}{0.75\textwidth}{DLSW1 SPT 5/5}
+\InsertFigure{Figures/SPT/DLSW2_1.png}{0.75\textwidth}{DLSW2 SPT 1/5}
+\InsertFigure{Figures/SPT/DLSW2_2.png}{0.75\textwidth}{DLSW2 SPT 2/5}
+\InsertFigure{Figures/SPT/DLSW2_3.png}{0.75\textwidth}{DLSW2 SPT 3/5}
+\InsertFigure{Figures/SPT/DLSW2_4.png}{0.75\textwidth}{DLSW2 SPT 4/5}
+\InsertFigure{Figures/SPT/DLSW2_5.png}{0.75\textwidth}{DLSW2 SPT 5/5}
+
+\newpage
+\section{Adresování}
+\label{sec:Sec04}
+
+\subsection{IPv4}
+\label{subsec:Sec041}
+\noindent Global subnets
+\begin{center}
+	\begin{tabular}{l|l|l}
+		Název & Číslo & Popis \\
+		\hline
+		Klient 101 & 101 & \\
+		Klient 102 & 102 & \\
+	\end{tabular}
+\end{center}
+
+\noindent Global loopbacks
+\begin{center}
+	\begin{tabular}{l|l|l}
+		Název & Číslo & Popis \\
+		\hline
+		Klient 101 & 101 & \\
+		Klient 102 & 102 & \\
+	\end{tabular}
+\end{center}
+
+\noindent Klient/server subnets
+\begin{center}
+	\begin{tabular}{l|l|l}
+		Název & Číslo & Popis \\
+		\hline
+		Klient 101 & 101 & \\
+		Klient 102 & 102 & \\
+	\end{tabular}
+\end{center}
+
+\noindent Management subnets
+\begin{center}
+	\begin{tabular}{l|l|l}
+		Název & Číslo & Popis \\
+		\hline
+		Klient 101 & 101 & \\
+		Klient 102 & 102 & \\
+	\end{tabular}
+\end{center}
+
+\noindent Management loopbacks
+\begin{center}
+	\begin{tabular}{l|l|l}
+		Název & Číslo & Popis \\
+		\hline
+		Klient 101 & 101 & \\
+		Klient 102 & 102 & \\
+	\end{tabular}
+\end{center}
+
+\InsertFigure{Figures/Addressing/IPv4.png}{0.75\textwidth}{IPv4 addressing}
+\InsertFigure{Figures/Addressing/IPv4MGMT.png}{0.75\textwidth}{IPv4 management addressing}
+
+\subsection{IPv6}
+\label{subsec:Sec042}
+
+\noindent Global subnets
+\begin{center}
+	\begin{tabular}{l|l|l}
+		Název & Číslo & Popis \\
+		\hline
+		Klient 101 & 101 & \\
+		Klient 102 & 102 & \\
+	\end{tabular}
+\end{center}
+
+\noindent Global loopbacks
+\begin{center}
+	\begin{tabular}{l|l|l}
+		Název & Číslo & Popis \\
+		\hline
+		Klient 101 & 101 & \\
+		Klient 102 & 102 & \\
+	\end{tabular}
+\end{center}
+
+\noindent Klient/server subnets
+\begin{center}
+	\begin{tabular}{l|l|l}
+		Název & Číslo & Popis \\
+		\hline
+		Klient 101 & 101 & \\
+		Klient 102 & 102 & \\
+	\end{tabular}
+\end{center}
+
+\InsertFigure{Figures/Addressing/IPv6.png}{0.75\textwidth}{IPv6 addressing}
+
+\subsection{Rekonvergence}
+\label{subsec:Sec043}
+\noindent V IGP je primárně preferována cesta přes WAN1, při výpadku cesty trvá cca 35 s než dojde k převzetí jinou cestou
+\InsertFigure{Figures/Rekonvergence/IPv4.png}{0.75\textwidth}{IPv4 rekonvergence}
+%\InsertFigure{Figures/Rekonvergence/IPv6.png}{0.75\textwidth}{IPv6 rekonvergence}
+
+\newpage
+\section{FHRP}
+\label{sec:Sec05}
+\subsection{Implementace}
+\label{sec:Sec051}
+\noindent do sh standby br
+\InsertFigure{Figures/Standby/R1.png}{0.75\textwidth}{R1 FHRP implementace}
+\InsertFigure{Figures/Standby/R2.png}{0.75\textwidth}{R2 FHRP implementace}
+
+\subsection{Tracking}
+\label{sec:Sec052}
+\noindent do sh standby
+\InsertFigure{Figures/StandbyDetail/R1_1.png}{0.75\textwidth}{R1 FHRP detail 1/6}
+\InsertFigure{Figures/StandbyDetail/R1_2.png}{0.75\textwidth}{R1 FHRP detail 2/6}
+\InsertFigure{Figures/StandbyDetail/R1_3.png}{0.75\textwidth}{R1 FHRP detail 3/6}
+\InsertFigure{Figures/StandbyDetail/R1_4.png}{0.75\textwidth}{R1 FHRP detail 4/6}
+\InsertFigure{Figures/StandbyDetail/R1_5.png}{0.75\textwidth}{R1 FHRP detail 5/6}
+\InsertFigure{Figures/StandbyDetail/R1_6.png}{0.75\textwidth}{R1 FHRP detail 6/6}
+\InsertFigure{Figures/StandbyDetail/R2_1.png}{0.75\textwidth}{R2 FHRP detail 1/6}
+\InsertFigure{Figures/StandbyDetail/R2_2.png}{0.75\textwidth}{R2 FHRP detail 2/6}
+\InsertFigure{Figures/StandbyDetail/R2_3.png}{0.75\textwidth}{R2 FHRP detail 3/6}
+\InsertFigure{Figures/StandbyDetail/R2_4.png}{0.75\textwidth}{R2 FHRP detail 4/6}
+\InsertFigure{Figures/StandbyDetail/R2_5.png}{0.75\textwidth}{R2 FHRP detail 5/6}
+\InsertFigure{Figures/StandbyDetail/R2_6.png}{0.75\textwidth}{R2 FHRP detail 6/6}
+
+\noindent do sh track
+\InsertFigure{Figures/StandbyDetail/R1Track.png}{0.75\textwidth}{R1 Tracking}
+\InsertFigure{Figures/StandbyDetail/R2Track.png}{0.75\textwidth}{R2 Tracking}
+
+\newpage
+\section{BGP}
+\label{sec:Sec06}
+\noindent do sh ip bgp
+%\InsertFigure{Figures/BGP4/WAN1.png}{0.75\textwidth}{WAN1 IPv4 BGP}
+%\InsertFigure{Figures/BGP4/WAN2.png}{0.75\textwidth}{WAN2 IPv4 BGP}
+%\InsertFigure{Figures/BGP4/ISP1.png}{0.75\textwidth}{ISP1 IPv4 BGP}
+%\InsertFigure{Figures/BGP4/ISP2.png}{0.75\textwidth}{ISP2 IPv4 BGP}
+
+\noindent do sh bgp ipv6
+%\InsertFigure{Figures/BGP6/WAN1.png}{0.75\textwidth}{WAN1 IPv6 BGP}
+%\InsertFigure{Figures/BGP6/WAN2.png}{0.75\textwidth}{WAN2 IPv6 BGP}
+%\InsertFigure{Figures/BGP6/ISP1.png}{0.75\textwidth}{ISP1 IPv6 BGP}
+%\InsertFigure{Figures/BGP6/ISP2.png}{0.75\textwidth}{ISP2 IPv6 BGP}
+
+\noindent prefixy
+
+\newpage
+\section{Management}
+\label{sec:Sec07}
+
+\subsection{IPv4 VRRP}
+\label{sec:Sec071}
+
+\newpage
+\section{IGP}
+\label{sec:Sec09}
+\noindent do sh ip int br
+\InsertFigure{Figures/Int4/ISP1.png}{0.75\textwidth}{ISP1 IPv4 interface brief}
+\InsertFigure{Figures/Int4/ISP2.png}{0.75\textwidth}{ISP2 IPv4 interface brief}
+\InsertFigure{Figures/Int4/WAN1.png}{0.75\textwidth}{WAN1 IPv4 interface brief}
+\InsertFigure{Figures/Int4/WAN2.png}{0.75\textwidth}{WAN2 IPv4 interface brief}
+\InsertFigure{Figures/Int4/R1.png}{0.75\textwidth}{R1 IPv4 interface brief}
+\InsertFigure{Figures/Int4/R2.png}{0.75\textwidth}{R2 IPv4 interface brief}
+\InsertFigure{Figures/Int4/DLSW1.png}{0.75\textwidth}{DLSW1 IPv4 interface brief}
+\InsertFigure{Figures/Int4/DLSW2.png}{0.75\textwidth}{DLSW2 IPv4 interface brief}
+\InsertFigure{Figures/Int4/ALSW1.png}{0.75\textwidth}{ALSW1 IPv4 interface brief}
+
+\noindent do sh ipv6 int br
+\InsertFigure{Figures/Int6/ISP1.png}{0.75\textwidth}{ISP1 IPv6 interface brief}
+\InsertFigure{Figures/Int6/ISP2.png}{0.75\textwidth}{ISP2 IPv6 interface brief}
+\InsertFigure{Figures/Int6/WAN1.png}{0.75\textwidth}{WAN1 IPv6 interface brief}
+\InsertFigure{Figures/Int6/WAN2.png}{0.75\textwidth}{WAN2 IPv6 interface brief}
+\InsertFigure{Figures/Int6/R1_1.png}{0.75\textwidth}{R1 IPv6 interface brief 1/2}
+\InsertFigure{Figures/Int6/R1_2.png}{0.75\textwidth}{R1 IPv6 interface brief 2/2}
+\InsertFigure{Figures/Int6/R2_1.png}{0.75\textwidth}{R2 IPv6 interface brief 1/2}
+\InsertFigure{Figures/Int6/R2_2.png}{0.75\textwidth}{R2 IPv6 interface brief 1/2}
+\InsertFigure{Figures/Int6/DLSW1.png}{0.75\textwidth}{DLSW1 IPv6 interface brief}
+\InsertFigure{Figures/Int6/DLSW2.png}{0.75\textwidth}{DLSW2 IPv6 interface brief}
+\InsertFigure{Figures/Int6/ALSW1.png}{0.75\textwidth}{ALSW1 IPv6 interface brief}
+
+\noindent do sh ip route
+\InsertFigure{Figures/Route4/ISP1.png}{0.75\textwidth}{ISP1 IPv4 routes}
+\InsertFigure{Figures/Route4/ISP2.png}{0.75\textwidth}{ISP2 IPv4 routes}
+\InsertFigure{Figures/Route4/WAN1.png}{0.75\textwidth}{WAN1 IPv4 routes}
+\InsertFigure{Figures/Route4/WAN2.png}{0.75\textwidth}{WAN2 IPv4 routes}
+\InsertFigure{Figures/Route4/R1.png}{0.75\textwidth}{R1 IPv4 routes}
+\InsertFigure{Figures/Route4/R2.png}{0.75\textwidth}{R2 IPv4 routes}
+
+\noindent do sh ipv6 route
+\InsertFigure{Figures/Route6/ISP1.png}{0.75\textwidth}{ISP1 IPv6 routes}
+\InsertFigure{Figures/Route6/ISP2.png}{0.75\textwidth}{ISP2 IPv6 routes}
+\InsertFigure{Figures/Route6/WAN1.png}{0.75\textwidth}{WAN1 IPv6 routes}
+\InsertFigure{Figures/Route6/WAN2.png}{0.75\textwidth}{WAN2 IPv6 routes}
+\InsertFigure{Figures/Route6/R1_1.png}{0.75\textwidth}{R1 IPv6 routes 1/2}
+\InsertFigure{Figures/Route6/R1_2.png}{0.75\textwidth}{R1 IPv6 routes 2/2}
+\InsertFigure{Figures/Route6/R2_1.png}{0.75\textwidth}{R2 IPv6 routes 1/2}
+\InsertFigure{Figures/Route6/R2_2.png}{0.75\textwidth}{R2 IPv6 routes 2/2}
+
+\noindent do sh ospfv3 int br
+\InsertFigure{Figures/R1OSPFBr.png}{0.75\textwidth}{R1 OSPFv3 Brief}
+\InsertFigure{Figures/R2OSPFBr.png}{0.75\textwidth}{R2 OSPFv3 Brief}
+\InsertFigure{Figures/WAN1OSPFBr.png}{0.75\textwidth}{WAN1 OSPFv3 Brief}
+\InsertFigure{Figures/WAN2OSPFBr.png}{0.75\textwidth}{WAN2 OSPFv3 Brief}
+
+
+\newpage
+\section{Link state}
+\label{sec:Sec10}
+žádné bodíky nebudou :(
+
+\newpage
+\section{Konektivita IPv4}
+\label{sec:Sec11}
+
+\subsection{Ping}
+\label{sec:Sec111}
+
+\subsection{Traceroute}
+\label{sec:Sec111}
+%\InsertFigure{Figures/Traceroute4/Client-OUT1.png}{0.75\textwidth}{Client route to internet 1.0.0.1}
+%\InsertFigure{Figures/Traceroute4/Client-OUT2.png}{0.75\textwidth}{Client route to internet 2.0.0.1}
+%\InsertFigure{Figures/Traceroute4/Server-OUT1.png}{0.75\textwidth}{Server route to internet 1.0.0.1}
+%\InsertFigure{Figures/Traceroute4/Server-OUT2.png}{0.75\textwidth}{Server route to internet 2.0.0.1}
+
+\newpage
+\section{Konektivita IPv4}
+\label{sec:Sec11}
+
+\subsection{Ping}
+\label{sec:Sec111}
+
+\subsection{Traceroute}
+\label{sec:Sec111}
+%\InsertFigure{Figures/Traceroute6/Client-OUT1.png}{0.75\textwidth}{Client route to internet 1.0.0.1}
+%\InsertFigure{Figures/Traceroute6/Client-OUT2.png}{0.75\textwidth}{Client route to internet 2.0.0.1}
+%\InsertFigure{Figures/Traceroute6/Server-OUT1.png}{0.75\textwidth}{Server route to internet 1.0.0.1}
+%\InsertFigure{Figures/Traceroute6/Server-OUT2.png}{0.75\textwidth}{Server route to internet 2.0.0.1}
+
+
+\end{document}

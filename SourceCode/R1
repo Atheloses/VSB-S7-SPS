@@ -1,0 +1,238 @@
+en
+conf t
+no ip domain-lookup
+hostname R1
+line con 0
+logging synchronous
+exec-timeout 0 0
+ipv6 unicast-routing
+
+track 301 ip route 44.9.247.0/25 reachability
+track 302 ip route 44.9.247.128/26 reachability
+track 303 ip route 44.9.247.192/28 reachability
+track 31 ipv6 route 2001:9999:2::/64 reachability
+track 32 ipv6 route 2001:9999:2:1::/64 reachability
+track 33 ipv6 route 2001:9999:2:2::/64 reachability
+
+vrf definition MGMT
+address-family ipv4
+exit-address-family
+address-family ipv6
+exit-address-family
+
+int gi0/1
+description R1-DLSW1
+no shut
+
+int gi0/1.18
+description VLAN-MA-18
+vrf forwarding MGMT
+no shut
+encapsulation dot1Q 18
+ip address 44.9.252.2 255.255.255.0
+vrrp 18 priority 120
+vrrp 18 ip 44.9.252.1
+
+no int gi0/1.101
+int gi0/1.101
+no shut 
+encapsulation dot1q 101
+description VLAN-Klient-101
+ip address 44.9.0.2 255.255.255.128
+ipv6 address 2001:9999:1::1/64
+standby version 2
+standby 101 priority 120
+standby 101 preempt
+standby 101 ip 44.9.0.1
+standby 11 priority 120
+standby 11 preempt
+standby 11 ipv6 2001:9999:1::/64
+ospfv3 1 ipv4 area 1
+ospfv3 2 ipv6 area 2 
+
+no int gi0/1.102
+int gi0/1.102
+no shut
+encapsulation dot1q 102
+description VLAN-Klient-102
+ip address 44.9.0.130 255.255.255.192
+ipv6 address 2001:9999:1:1::1/64
+standby version 2
+standby 102 priority 120
+standby 102 preempt
+standby 102 ip 44.9.0.129
+standby 12 priority 120
+standby 12 preempt
+standby 12 ipv6 2001:9999:1:1::/64
+ospfv3 1 ipv4 area 1
+ospfv3 2 ipv6 area 2 
+
+no int gi0/1.103
+int gi0/1.103
+no shut
+encapsulation dot1q 103
+description VLAN-Klient-103
+ip address 44.9.0.194 255.255.255.240
+ipv6 address 2001:9999:1:2::1/64
+standby version 2
+standby 103 priority 120
+standby 103 preempt
+standby 103 ip 44.9.0.193
+standby 13 priority 120
+standby 13 preempt
+standby 13 ipv6 2001:9999:1:2::/64
+ospfv3 1 ipv4 area 1
+ospfv3 2 ipv6 area 2 
+
+no int gi0/1.301
+int gi0/1.301
+no shut
+encapsulation dot1q 301
+description VLAN-Server-301
+ip address 44.9.247.2 255.255.255.128
+ipv6 address 2001:9999:2::1/64
+standby version 2
+standby 1 priority 150
+standby 1 preempt
+standby 1 ip 44.9.247.1
+standby 1 track 301 decrement 30
+standby 21 priority 150
+standby 21 preempt
+standby 21 ipv6 2001:9999:2::/64
+standby 21 track 31 decrement 30
+ospfv3 1 ipv4 area 1
+ospfv3 2 ipv6 area 2
+
+no int gi0/1.302
+int gi0/1.302
+no shut
+encapsulation dot1q 302
+description VLAN-Server-302
+ip address 44.9.247.130 255.255.255.192
+ipv6 address 2001:9999:2:1::1/64
+standby version 2
+standby 2 priority 150
+standby 2 preempt
+standby 2 ip 44.9.247.129
+standby 2 track 302 decrement 30
+standby 22 priority 150
+standby 22 preempt
+standby 22 ipv6 2001:9999:2:1::/64
+standby 22 track 32 decrement 30
+ospfv3 1 ipv4 area 1
+ospfv3 2 ipv6 area 2
+
+no int gi0/1.303
+int gi0/1.303
+no shut
+encapsulation dot1q 303
+description VLAN-Server-303
+ip address 44.9.247.194 255.255.255.240
+ipv6 address 2001:9999:2:2::1/64
+standby version 2
+standby 3 priority 150
+standby 3 preempt
+standby 3 ip 44.9.247.193
+standby 3 track 303 decrement 30
+standby 23 priority 150
+standby 23 preempt
+standby 23 ipv6 2001:9999:2:2::/64
+standby 23 track 33 decrement 30
+ospfv3 1 ipv4 area 1
+ospfv3 2 ipv6 area 2
+
+int gi0/2
+no sh
+
+int gi0/2.9
+no shut
+encapsulation dot1q 9
+description R1-WAN2
+ip address 44.9.248.2 255.255.255.254
+ipv6 address 2001:9999::3/127
+ospfv3 1 ipv4 area 0
+ospfv3 2 ipv6 area 0
+ospfv3 1 ipv4 cost 50
+ospfv3 2 ipv6 cost 50
+
+int gi0/2.91
+description VLAN-M-91
+vrf forwarding MGMT
+no shut
+encapsulation dot1Q 91
+ip address 44.9.253.250 255.255.255.254
+
+int gi0/3
+no sh
+
+int gi0/3.9
+description R1-WAN1
+no shut
+encapsulation dot1Q 9
+ip address 44.9.248.0 255.255.255.254
+ipv6 address 2001:9999::1/127
+ospfv3 1 ipv4 area 0
+ospfv3 2 ipv6 area 0
+ospfv3 1 ipv4 cost 10
+ospfv3 2 ipv6 cost 10
+
+int gi0/3.91
+description VLAN-M-91
+vrf forwarding MGMT
+no shut
+encapsulation dot1Q 91
+ip address 44.9.253.248 255.255.255.254
+
+int loopback0
+description loopback
+ip address 44.9.254.3 255.255.255.255
+ipv6 address 2001:9999::403/128
+ospfv3 1 ipv4 area 0
+ospfv3 2 ipv6 area 0
+--popis bgp
+--tracerouty
+
+int loopback1
+description VRF-Loopback
+vrf forwarding MGMT
+ip address 44.9.253.244 255.255.255.255
+
+router ospfv3 1
+router-id 44.9.254.3
+address-family ipv4
+exit-address-family
+passive-interface default
+no passive-interface gigabitEthernet0/2.9
+no passive-interface gigabitEthernet0/3.9
+
+router ospfv3 2
+router-id 44.9.254.3
+address-family ipv6
+exit-address-family
+passive-interface default
+no passive-interface gigabitEthernet0/2.9
+no passive-interface gigabitEthernet0/3.9
+
+router eigrp 1
+address-family ipv4 vrf MGMT
+network 44.9.253.250 0.0.0.1
+network 44.9.253.248 0.0.0.1
+network 44.9.253.244 0.0.0.0
+network 44.9.252.0 0.0.0.255
+no auto-summary
+autonomous-system 1
+exit-address-family
+
+access-list 1 permit any
+username grp9 password cisco
+enable password cisco
+ip domain name sps.local
+crypto key generate rsa
+
+line vty 0 4
+password cisco
+access-class 1 in vrf-also
+login local
+transport input telnet ssh
+
+exit

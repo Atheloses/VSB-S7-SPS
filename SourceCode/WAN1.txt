@@ -1,0 +1,199 @@
+en
+conf t
+no ip domain-lookup
+hostname WAN1
+line con 0
+logging synchronous
+exec-timeout 0 0
+ipv6 unicast-routing
+
+vrf definition MGMT
+address-family ipv4
+exit-address-family
+address-family ipv6
+exit-address-family
+
+int gi0/1
+description WAN1-WAN2
+no shut
+ip address 44.9.248.8 255.255.255.254
+ipv6 address 2001:9999::8/127
+ospfv3 1 ipv4 area 0
+ospfv3 2 ipv6 area 0
+ospfv3 1 ipv4 cost 10
+ospfv3 2 ipv6 cost 10
+
+int gi0/2
+description WAN1-ISP1
+no shut
+ip address 44.9.248.10 255.255.255.254
+ipv6 address 2001:9999::B/127
+
+int gi0/3
+no sh
+
+int gi0/3.9
+description WAN1-R1
+no shut
+encapsulation dot1q 9
+ip address 44.9.248.1 255.255.255.254
+ipv6 address 2001:9999::/127
+ospfv3 1 ipv4 area 0
+ospfv3 2 ipv6 area 0
+ospfv3 1 ipv4 cost 10
+ospfv3 2 ipv6 cost 10
+
+int gi0/3.91
+description VLAN-M-91
+no shut
+encapsulation dot1q 91
+vrf forwarding MGMT
+ip address 44.9.253.249 255.255.255.254
+
+int gi0/4
+no shut
+
+int gi0/4.9
+description WAN1-R2
+no shut
+encapsulation dot1q 9
+ip address 44.9.248.5 255.255.255.254
+ipv6 address 2001:9999::4/127
+ospfv3 1 ipv4 area 0
+ospfv3 2 ipv6 area 0
+ospfv3 1 ipv4 cost 10
+ospfv3 2 ipv6 cost 10
+
+int gi0/4.91
+description VLAN-M-91
+no shut
+encapsulation dot1q 91
+vrf forwarding MGMT
+ip address 44.9.253.253 255.255.255.254
+
+int loopback0
+description loopback
+ip address 44.9.254.5 255.255.255.255
+ipv6 address 2001:9999::405/128
+ospfv3 1 ipv4 area 0
+ospfv3 2 ipv6 area 0
+
+int loopback1
+description VRF-Loopback
+vrf forwarding MGMT
+ip address 44.9.253.246 255.255.255.255
+
+router ospfv3 1
+router-id 44.9.254.5
+address-family ipv4
+default-information originate always route-map RM_DEFAULT
+exit-address-family
+passive-interface default
+no passive-interface gigabitEthernet0/1
+no passive-interface gigabitEthernet0/3.9
+no passive-interface gigabitEthernet0/4.9
+
+router ospfv3 2
+router-id 44.9.254.5
+address-family ipv6
+default-information originate always
+exit-address-family
+passive-interface default
+no passive-interface gigabitEthernet0/1
+no passive-interface gigabitEthernet0/3.9
+no passive-interface gigabitEthernet0/4.9
+
+no router eigrp 1
+router eigrp 1
+address-family ipv4 vrf MGMT
+network 44.9.253.248 0.0.0.1
+network 44.9.253.253 0.0.0.1
+network 44.9.253.246 0.0.0.0
+no auto-summary
+autonomous-system 1
+exit-address-family
+
+no router bgp 9
+router bgp 9
+address-family ipv4
+neighbor 44.9.248.11 remote-as 100
+neighbor 44.9.248.11 route-map RM_KLIENTOUT4 out
+neighbor 44.9.254.6 remote-as 9
+neighbor 44.9.254.6 update-source loopback 0
+neighbor 44.9.254.6 route-map RM_INTERNETOUT_IPV4 out
+redistribute ospfv3 1 route-map RM_REDISTRIBUTE_IPV4
+aggregate-address 44.9.0.0 255.255.128.0 summary-only
+aggregate-address 44.9.128.0 255.255.192.0 summary-only
+aggregate-address 44.9.192.0 255.255.224.0 summary-only
+aggregate-address 44.9.224.0 255.255.240.0 summary-only
+aggregate-address 44.9.240.0 255.255.248.0 summary-only
+exit-address-family
+address-family ipv6
+neighbor 2001:9999::A remote-as 100
+neighbor 2001:9999::A route-map RM_KLIENTOUT6 out
+neighbor 2001:9999::408 remote-as 9
+neighbor 2001:9999::408 update-source loopback 0
+neighbor 2001:9999::408 route-map RM_INTERNETOUT_IPV6 out
+redistribute ospf 2 route-map RM_REDISTRIBUTE_IPV6
+exit-address-family
+
+route-map RM_REDISTRIBUTE_IPV4 permit 10
+match ip address REDISTRIBUTE_IPV4
+
+no ip access-list standard REDISTRIBUTE_IPV4
+ip access-list standard REDISTRIBUTE_IPV4
+deny 44.9.248.0 0.0.7.255
+permit 44.9.0.0 0.0.255.255
+
+route-map RM_KLIENTOUT4 permit 10
+match ip address prefix-list PL_KLIENT_IPV4
+set as-path prepend 9
+
+route-map RM_KLIENTOUT6 permit 10
+match ipv6 address prefix-list PL_KLIENT_IPV6
+set as-path prepend 9
+
+ip prefix-list PL_KLIENT_IPV4 seq 10 permit 44.9.0.0/17
+
+ipv6 prefix-list PL_KLIENT_IPV6 seq 10 permit 2001:9999:1::/64
+ipv6 prefix-list PL_KLIENT_IPV6 seq 20 permit 2001:9999:1:1::/64
+ipv6 prefix-list PL_KLIENT_IPV6 seq 30 permit 2001:9999:1:2::/64
+
+ip prefix-list PL_INTERNETOUT_IPV4 seq 10 permit 2.0.0.0/16
+
+route-map RM_INTERNETOUT_IPV4 permit 10
+match ip address prefix-list PL_INTERNETOUT_IPV4
+set local-preference 121
+
+ipv6 prefix-list PL_INTERNETOUT_IPV6 seq 10 permit 1001:9999:2000::/48
+
+route-map RM_INTERNETOUT_IPV6 permit 10
+match ip address prefix-list PL_INTERNETOUT_IPV6
+set local-preference 121
+
+route-map RM_REDISTRIBUTE_IPV6 permit 10
+match ipv6 address REDISTRIBUTE_IPV6
+
+no ipv6 access-list standard REDISTRIBUTE_IPV6
+ipv6 access-list REDISTRIBUTE_IPV6
+permit 2001:9999:1::/64 any
+permit 2001:9999:2::/64 any
+
+route-map RM_DEFAULT permit 10
+match ip address prefix-list PL_DEFAULT
+
+ip prefix-list PL_DEFAULT seq 10 permit 44.9.248.0/31
+
+access-list 1 permit any
+username grp9 password cisco
+enable password cisco
+ip domain name sps.local
+crypto key generate rsa
+
+line vty 0 4
+password cisco
+access-class 1 in vrf-also
+login local
+transport input telnet ssh
+
+exit

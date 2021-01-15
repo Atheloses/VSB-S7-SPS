@@ -1,0 +1,53 @@
+en
+conf t
+no ip domain-lookup
+hostname ISP1
+line con 0
+logging synchronous
+exec-timeout 0 0
+ipv6 unicast-routing
+
+ip route 44.9.254.8 255.255.255.255 44.9.248.15
+ipv6 route 2001:9999::408/128 2001:9999::F
+
+int gi0/1
+description ISP1-ISP2
+no shut
+ip address 44.9.248.14 255.255.255.254
+ipv6 address 2001:9999::E/127
+
+int gi0/2
+description ISP1-WAN1
+no shut
+ip address 44.9.248.11 255.255.255.254
+ipv6 address 2001:9999::A/127
+
+int loopback0
+description loopback
+ip address 44.9.254.7 255.255.255.255
+ipv6 address 2001:9999::407/128
+
+no int loopback100
+int loopback100
+description ToJsouTyInternety
+ip address 1.0.0.1 255.0.0.0
+ipv6 address 2001:9999:1000::1/48
+
+no router bgp 100
+router bgp 100
+address-family ipv4
+neighbor 44.9.248.10 remote-as 9
+neighbor 44.9.254.8 remote-as 100
+neighbor 44.9.254.8 update-source loopback 0
+neighbor 44.9.254.8 next-hop-self
+network 1.0.0.0 mask 255.0.0.0
+exit-address-family
+address-family ipv6
+neighbor 2001:9999::B remote-as 9
+neighbor 2001:9999::408 remote-as 100
+neighbor 2001:9999::408 update-source loopback 0
+neighbor 2001:9999::408 next-hop-self
+network 2001:9999:1000::/48
+exit-address-family
+
+exit
