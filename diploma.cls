@@ -285,6 +285,7 @@
 {
 \begin{center}
 \centering
+\captionsetup{type=figure}
 \includegraphics[width=#2]{#1}
 \captionof{figure}{#3}
 \end{center}
