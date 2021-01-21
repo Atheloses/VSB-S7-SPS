@@ -117,10 +117,11 @@ no router bgp 9
 router bgp 9
 address-family ipv4
 neighbor 44.9.248.13 remote-as 100
-neighbor 44.9.248.13 route-map RM_SERVEROUT4 out
+neighbor 44.9.248.13 route-map RM_INTERNETOUT4 out
 neighbor 44.9.254.5 remote-as 9
 neighbor 44.9.254.5 update-source loopback 0
-neighbor 44.9.254.5 route-map RM_INTERNETOUT_IPV4 out
+neighbor 44.9.254.5 route-map RM_NEIGHBOROUT4 out
+neighbor 44.9.254.5 next-hop-self
 redistribute ospfv3 1 route-map RM_REDISTRIBUTE_IPV4
 aggregate-address 44.9.0.0 255.255.128.0 summary-only
 aggregate-address 44.9.128.0 255.255.192.0 summary-only
@@ -130,13 +131,17 @@ aggregate-address 44.9.240.0 255.255.248.0 summary-only
 exit-address-family
 address-family ipv6
 neighbor 2001:9999::C remote-as 100
-neighbor 2001:9999::C route-map RM_SERVEROUT6 out
+neighbor 2001:9999::C route-map RM_INTERNETOUT6 out
 neighbor 2001:9999::405 remote-as 9
 neighbor 2001:9999::405 update-source loopback 0
-neighbor 2001:9999::405 route-map RM_INTERNETOUT_IPV6 out
+neighbor 2001:9999::405 route-map RM_NEIGHBOROUT6 out
+neighbor 2001:9999::405 next-hop-self
 redistribute ospf 2 route-map RM_REDISTRIBUTE_IPV6
+aggregate-address 2001:9999:1::/48 summary-only
+aggregate-address 2001:9999:2::/48 summary-only
 exit-address-family
 
+no route-map RM_REDISTRIBUTE_IPV4
 route-map RM_REDISTRIBUTE_IPV4 permit 10
 match ip address REDISTRIBUTE_IPV4
 
@@ -145,43 +150,67 @@ ip access-list standard REDISTRIBUTE_IPV4
 deny 44.9.248.0 0.0.7.255
 permit 44.9.0.0 0.0.255.255
 
-route-map RM_SERVEROUT4 permit 10
-match ip address prefix-list PL_SERVER_IPV4
+no route-map RM_INTERNETOUT4
+route-map RM_INTERNETOUT4 permit 10
+match ip address prefix-list PL_SERVER4
 set as-path prepend 9
+route-map RM_INTERNETOUT4 permit 20
+match ip address prefix-list PL_KLIENT4
 
-route-map RM_SERVEROUT6 permit 10
-match ipv6 address prefix-list PL_SERVER_IPV6
-set as-path prepend 9 
+no ip prefix-list PL_KLIENT4
+no ip prefix-list PL_SERVER4
+ip prefix-list PL_KLIENT4 seq 10 permit 44.9.0.0/17
+ip prefix-list PL_SERVER4 seq 10 permit 44.9.240.0/21
 
-ip prefix-list PL_SERVER_IPV4 seq 10 permit 44.9.240.0/21
+no route-map RM_NEIGHBOROUT4
+route-map RM_NEIGHBOROUT4 permit 10
+match ip address 1
+set local-preference 120
+route-map RM_NEIGHBOROUT4 permit 20
 
-ipv6 prefix-list PL_SERVER_IPV6 seq 10 permit 2001:9999:2::/64
-ipv6 prefix-list PL_SERVER_IPV6 seq 20 permit 2001:9999:2:1::/64
-ipv6 prefix-list PL_SERVER_IPV6 seq 30 permit 2001:9999:2:2::/64
+no access-list 1
+no access-list 2
+no ip prefix-list PL_NEIGHBORSECONDOUT4
+ip prefix-list PL_NEIGHBORSECONDOUT4 seq 10 permit 2.0.0.0/16
+access-list 1 permit 1.0.0.0 0.0.0.255
+access-list 2 permit 2.0.0.0 0.0.255.255
 
-ip prefix-list PL_INTERNETOUT_IPV4 seq 10 permit 1.0.0.0/8
-
-route-map RM_INTERNETOUT_IPV4 permit 10
-match ip address prefix-list PL_INTERNETOUT_IPV4
-set local-preference 122
-
-ipv6 prefix-list PL_INTERNETOUT_IPV6 seq 10 permit 2001:9999:2000::/56
-
-route-map RM_INTERNETOUT_IPV6 permit 10
-match ip address prefix-list PL_INTERNETOUT_IPV6
-set local-preference 122
-
+no route-map RM_REDISTRIBUTE_IPV6
 route-map RM_REDISTRIBUTE_IPV6 permit 10
 match ipv6 address REDISTRIBUTE_IPV6
 
 no ipv6 access-list standard REDISTRIBUTE_IPV6
 ipv6 access-list REDISTRIBUTE_IPV6
-permit 2001:9999:1::/64 any
-permit 2001:9999:2::/64 any
+permit 2001:9999:1::/48 any
+permit 2001:9999:2::/48 any
 
+no route-map RM_INTERNETOUT6
+route-map RM_INTERNETOUT6 permit 10
+match ipv6 address prefix-list PL_SERVER6
+set as-path prepend 9
+route-map RM_INTERNETOUT6 permit 20
+match ipv6 address prefix-list PL_KLIENT6
+
+no ipv6 prefix-list PL_KLIENT6
+no ipv6 prefix-list PL_SERVER6
+ipv6 prefix-list PL_KLIENT6 seq 10 permit 2001:9999:1::/48
+ipv6 prefix-list PL_SERVER6 seq 10 permit 2001:9999:2::/48
+
+no route-map RM_NEIGHBOROUT6
+route-map RM_NEIGHBOROUT6 permit 10
+match ipv6 address prefix-list PL_NEIGHBOROUT6
+set local-preference 120
+route-map RM_NEIGHBOROUT6 permit 20
+
+no ipv6 prefix-list PL_NEIGHBOROUT6
+ipv6 prefix-list PL_NEIGHBOROUT6 seq 10 permit 2001:9999:2000::/48
+
+
+no route-map RM_DEFAULT
 route-map RM_DEFAULT permit 10
 match ip address prefix-list PL_DEFAULT
 
+no ip prefix-list PL_DEFAULT
 ip prefix-list PL_DEFAULT seq 10 permit 44.9.248.12/31
 
 access-list 1 permit any

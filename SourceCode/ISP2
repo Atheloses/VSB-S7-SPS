@@ -47,7 +47,7 @@ neighbor 2001:9999::D remote-as 9
 neighbor 2001:9999::407 remote-as 100
 neighbor 2001:9999::407 update-source loopback 0
 neighbor 2001:9999::407 next-hop-self
-network 2002:9999:2000::/56
+network 2001:9999:2000::/56
 exit-address-family
 
 exit

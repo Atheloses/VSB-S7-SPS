@@ -26,29 +26,29 @@
 
 \MakeTitlePages
 
-\section{Plán číslování VLAN a implementace VLAN}
+\section{VLANs plan}
 \label{sec:Sec01}
 \begin{tabular}{l|l|l}
-	Název & Číslo & Popis \\
+	Name & Number & Description \\
 	\hline
 	Klient 101 & 101 & \\
 	Klient 102 & 102 & \\
 	Klient 103 & 103 & \\
-	Klient 301 & 301 & \\
-	Klient 302 & 301 & \\
-	Klient 303 & 303 & \\
-	g & 9 & datový provoz\\
+	Server 301 & 301 & \\
+	Server 302 & 301 & \\
+	Server 303 & 303 & \\
+	g & 9 & data traffic\\
 	M & 91 & management VRF\\
 	MA & 18 & management VRF\\
-	unused & 998 & nevyužité porty \\
-	native & 999 & nativní \\
+	unused & 998 & not used ports \\
+	native & 999 & native \\
 \end{tabular}
 
 \newpage
-\section{L2 v access a distribuční vrstvě}
+\section{L2 access \& distribution}
 \label{sec:Sec02}
 
-\subsection{VLANs}
+\subsection{VLANs implementation}
 \label{subsec:Sec021}
 \noindent do sh vlan
 \InsertFigure{Figures/VLAN/ALSW1.png}{0.75\textwidth}{ALSW1 VLANs}
@@ -89,7 +89,7 @@
 \InsertFigure{Figures/SPT/DLSW2_5.png}{0.75\textwidth}{DLSW2 SPT 5/5}
 
 \newpage
-\section{Adresování}
+\section{Addressing}
 \label{sec:Sec04}
 
 \subsection{IPv4}
@@ -128,7 +128,6 @@
         WAN1-ISP1 & 2001:9999:0:1::A/127 & 2001:9999:0:1::B & 2001:9999:0:1::A & IC Link \\
         WAN2-ISP2 & 2001:9999:0:1::C/127 & 2001:9999:0:1::D & 2001:9999:0:1::C & IC Link \\
         ISP1-ISP2 & 2001:9999:0:1::E/127 & 2001:9999:0:1::E & 2001:9999:0:1::F & IC Link \\
-		%TODO
 		\hline
 		DLSW1 & 2001:9999:0:1::400/128 & 2001:9999:0:1::400 & - & Loopback0 \\
         DLSW2 & 2001:9999:0:1::401/128 & 2001:9999:0:1::401 & - & Loopback0 \\
@@ -139,7 +138,6 @@
         WAN2 & 2001:9999:0:1::406/128 & 2001:9999:0:1::406 & - & Loopback0 \\
         ISP1 & 2001:9999:0:1::407/128 & 2001:9999:0:1::407 & - & Loopback0 \\
         ISP2 & 2001:9999:0:1::408/128 & 2001:9999:0:1::408 & - & Loopback0 \\
-		%TODO
 	\end{tabular}
 \end{center}
 
@@ -170,14 +168,12 @@
 
 
 \InsertFigure{Figures/Addressing/IPv4.png}{0.75\textwidth}{IPv4 addressing}
-\InsertFigure{Figures/Addressing/IPv4MGMT.png}{0.75\textwidth}{IPv4 management addressing}
 
 \subsection{IPv6}
 \label{subsec:Sec042}
 \noindent Klient/server
 \begin{center}
 	\begin{tabular}{l|l|l}
-		%TODO predelat na IPV6
 		Name & Network address & Description \\
 		\hline
 		VLAN 101 & 2001:9999:1::/64 & Client VLAN 1\\
@@ -186,13 +182,13 @@
 		Client 1 & 2001:9999:1:3:/64 & First client subnet\\
 		... & ... & ...\\
 		Client 200 & 2001:9999:1:ca::/64 & Last client subnet\\
-		... & ... & ...\\
-		Server 1 & 2001:9999:2:3::/64 & First server subnet\\
-		... & ... & ...\\
-		Server 50 & 2001:9999:2:34::/64 & Last server subnet\\
+		\hline
 		VLAN 301 & 2001:9999:2::/64 & Server VLAN 1\\
 		VLAN 302 & 2001:9999:2:1::/64 & Server VLAN 2\\
 		VLAN 303 & 2001:9999:2:2::/64 & Server VLAN 3\\
+		Server 1 & 2001:9999:2:3::/64 & First server subnet\\
+		... & ... & ...\\
+		Server 50 & 2001:9999:2:34::/64 & Last server subnet\\
 	\end{tabular}
 \end{center}
 
@@ -209,7 +205,6 @@
         WAN1-ISP1 & 2001:9999:0:1::A/127 & 2001:9999:0:1::B & 2001:9999:0:1::A & IC Link \\
         WAN2-ISP2 & 2001:9999:0:1::C/127 & 2001:9999:0:1::D & 2001:9999:0:1::C & IC Link \\
         ISP1-ISP2 & 2001:9999:0:1::E/127 & 2001:9999:0:1::E & 2001:9999:0:1::F & IC Link \\
-		%TODO
 		\hline
 		DLSW1 & 2001:9999:0:1::400/128 & 2001:9999:0:1::400 & - & Loopback0 \\
         DLSW2 & 2001:9999:0:1::401/128 & 2001:9999:0:1::401 & - & Loopback0 \\
@@ -220,7 +215,6 @@
         WAN2 & 2001:9999:0:1::406/128 & 2001:9999:0:1::406 & - & Loopback0 \\
         ISP1 & 2001:9999:0:1::407/128 & 2001:9999:0:1::407 & - & Loopback0 \\
         ISP2 & 2001:9999:0:1::408/128 & 2001:9999:0:1::408 & - & Loopback0 \\
-		%TODO
 	\end{tabular}
 \end{center}
 
@@ -229,14 +223,14 @@
 
 \subsection{Rekonvergence}
 \label{subsec:Sec043}
-\noindent V IGP je primárně preferována cesta přes WAN1, při výpadku cesty trvá cca 35 s než dojde k převzetí jinou cestou
-\InsertFigure{Figures/Rekonvergence/IPv4.png}{0.75\textwidth}{IPv4 rekonvergence}
-%\InsertFigure{Figures/Rekonvergence/IPv6.png}{0.75\textwidth}{IPv6 rekonvergence}
+\noindent Routing int IGP prefers route through WAN1, after outage it takes about 5 second to change route
+\InsertFigure{Figures/Reconvergence/IPv4.png}{0.75\textwidth}{IPv4 reconvergence}
+\InsertFigure{Figures/Reconvergence/IPv6.png}{0.75\textwidth}{IPv6 reconvergence}
 
 \newpage
 \section{FHRP}
 \label{sec:Sec05}
-\subsection{Implementace}
+\subsection{Implementation}
 \label{sec:Sec051}
 \noindent do sh standby br
 \InsertFigure{Figures/Standby/R1.png}{0.75\textwidth}{R1 FHRP implementace}
@@ -263,32 +257,48 @@
 \InsertFigure{Figures/StandbyDetail/R2Track.png}{0.75\textwidth}{R2 Tracking}
 
 \newpage
-\section{BGP}
+\section{BGP \& Aggregation}
 \label{sec:Sec06}
 \noindent do sh ip bgp
-%\InsertFigure{Figures/BGP4/WAN1.png}{0.75\textwidth}{WAN1 IPv4 BGP}
-%\InsertFigure{Figures/BGP4/WAN2.png}{0.75\textwidth}{WAN2 IPv4 BGP}
-%\InsertFigure{Figures/BGP4/ISP1.png}{0.75\textwidth}{ISP1 IPv4 BGP}
-%\InsertFigure{Figures/BGP4/ISP2.png}{0.75\textwidth}{ISP2 IPv4 BGP}
+\InsertFigure{Figures/BGP4/WAN1.png}{0.75\textwidth}{WAN1 IPv4 BGP}
+\InsertFigure{Figures/BGP4/WAN2.png}{0.75\textwidth}{WAN2 IPv4 BGP}
+\InsertFigure{Figures/BGP4/ISP1.png}{0.75\textwidth}{ISP1 IPv4 BGP}
+\InsertFigure{Figures/BGP4/ISP2.png}{0.75\textwidth}{ISP2 IPv4 BGP}
 
-\noindent do sh bgp ipv6
-%\InsertFigure{Figures/BGP6/WAN1.png}{0.75\textwidth}{WAN1 IPv6 BGP}
-%\InsertFigure{Figures/BGP6/WAN2.png}{0.75\textwidth}{WAN2 IPv6 BGP}
-%\InsertFigure{Figures/BGP6/ISP1.png}{0.75\textwidth}{ISP1 IPv6 BGP}
-%\InsertFigure{Figures/BGP6/ISP2.png}{0.75\textwidth}{ISP2 IPv6 BGP}
+\noindent do sh bgp ipv6 unicast
+\InsertFigure{Figures/BGP6/WAN1_1.png}{0.75\textwidth}{WAN1 IPv6 BGP 1/2}
+\InsertFigure{Figures/BGP6/WAN2_2.png}{0.75\textwidth}{WAN2 IPv6 BGP 2/2}
+\InsertFigure{Figures/BGP6/WAN1_1.png}{0.75\textwidth}{WAN1 IPv6 BGP 1/2}
+\InsertFigure{Figures/BGP6/WAN2_2.png}{0.75\textwidth}{WAN2 IPv6 BGP 2/2}
+\InsertFigure{Figures/BGP6/ISP1.png}{0.75\textwidth}{ISP1 IPv6 BGP}
+\InsertFigure{Figures/BGP6/ISP2.png}{0.75\textwidth}{ISP2 IPv6 BGP}
 
 \noindent prefixy
 
 \newpage
 \section{Management}
 \label{sec:Sec07}
+\InsertFigure{Figures/Addressing/IPv4MGMT.png}{0.75\textwidth}{IPv4 management addressing}
+
+\noindent do sh eigrp address-family ipv4 vrf MGMT int
+\InsertFigure{Figures/Management/R1.png}{0.75\textwidth}{R1 VRF EIGRP}
+\InsertFigure{Figures/Management/R2.png}{0.75\textwidth}{R2 VRF EIGRP}
+\InsertFigure{Figures/Management/WAN1.png}{0.75\textwidth}{WAN1 VRF EIGRP}
+\InsertFigure{Figures/Management/WAN2.png}{0.75\textwidth}{WAN2 VRF EIGRP}
+
 
 \subsection{IPv4 VRRP}
 \label{sec:Sec071}
 
+\InsertFigure{Figures/Management/R1VRRP.png}{0.75\textwidth}{R1 IPv4 VRRP}
+\InsertFigure{Figures/Management/R2VRRP.png}{0.75\textwidth}{R2 IPv4 VRRP}
+
 \newpage
 \section{IGP}
 \label{sec:Sec09}
+
+\subsection{IPv4}
+\label{subsec:Sec111}
 \noindent do sh ip int br
 \InsertFigure{Figures/Int4/ISP1.png}{0.75\textwidth}{ISP1 IPv4 interface brief}
 \InsertFigure{Figures/Int4/ISP2.png}{0.75\textwidth}{ISP2 IPv4 interface brief}
@@ -300,6 +310,23 @@
 \InsertFigure{Figures/Int4/DLSW2.png}{0.75\textwidth}{DLSW2 IPv4 interface brief}
 \InsertFigure{Figures/Int4/ALSW1.png}{0.75\textwidth}{ALSW1 IPv4 interface brief}
 
+\noindent do sh ip route
+\InsertFigure{Figures/Route4/ISP1.png}{0.75\textwidth}{ISP1 IPv4 routes}
+\InsertFigure{Figures/Route4/ISP2.png}{0.75\textwidth}{ISP2 IPv4 routes}
+\InsertFigure{Figures/Route4/WAN1.png}{0.75\textwidth}{WAN1 IPv4 routes}
+\InsertFigure{Figures/Route4/WAN2.png}{0.75\textwidth}{WAN2 IPv4 routes}
+\InsertFigure{Figures/Route4/R1.png}{0.75\textwidth}{R1 IPv4 routes}
+\InsertFigure{Figures/Route4/R2.png}{0.75\textwidth}{R2 IPv4 routes}
+
+\noindent do sh ospfv3 ipv4 int br
+\InsertFigure{Figures/OSPFv3_v4/R1BR.png}{0.75\textwidth}{R1 OSPFv3 Brief}
+\InsertFigure{Figures/OSPFv3_v4/R2BR.png}{0.75\textwidth}{R2 OSPFv3 Brief}
+\InsertFigure{Figures/OSPFv3_v4/WAN1BR.png}{0.75\textwidth}{WAN1 OSPFv3 Brief}
+\InsertFigure{Figures/OSPFv3_v4/WAN2BR.png}{0.75\textwidth}{WAN2 OSPFv3 Brief}
+
+
+\subsection{IPv6}
+\label{subsec:Sec112}
 \noindent do sh ipv6 int br
 \InsertFigure{Figures/Int6/ISP1.png}{0.75\textwidth}{ISP1 IPv6 interface brief}
 \InsertFigure{Figures/Int6/ISP2.png}{0.75\textwidth}{ISP2 IPv6 interface brief}
@@ -313,14 +340,6 @@
 \InsertFigure{Figures/Int6/DLSW2.png}{0.75\textwidth}{DLSW2 IPv6 interface brief}
 \InsertFigure{Figures/Int6/ALSW1.png}{0.75\textwidth}{ALSW1 IPv6 interface brief}
 
-\noindent do sh ip route
-\InsertFigure{Figures/Route4/ISP1.png}{0.75\textwidth}{ISP1 IPv4 routes}
-\InsertFigure{Figures/Route4/ISP2.png}{0.75\textwidth}{ISP2 IPv4 routes}
-\InsertFigure{Figures/Route4/WAN1.png}{0.75\textwidth}{WAN1 IPv4 routes}
-\InsertFigure{Figures/Route4/WAN2.png}{0.75\textwidth}{WAN2 IPv4 routes}
-\InsertFigure{Figures/Route4/R1.png}{0.75\textwidth}{R1 IPv4 routes}
-\InsertFigure{Figures/Route4/R2.png}{0.75\textwidth}{R2 IPv4 routes}
-
 \noindent do sh ipv6 route
 \InsertFigure{Figures/Route6/ISP1.png}{0.75\textwidth}{ISP1 IPv6 routes}
 \InsertFigure{Figures/Route6/ISP2.png}{0.75\textwidth}{ISP2 IPv6 routes}
@@ -331,28 +350,23 @@
 \InsertFigure{Figures/Route6/R2_1.png}{0.75\textwidth}{R2 IPv6 routes 1/2}
 \InsertFigure{Figures/Route6/R2_2.png}{0.75\textwidth}{R2 IPv6 routes 2/2}
 
-\noindent do sh ospfv3 int br
-\InsertFigure{Figures/R1OSPFBr.png}{0.75\textwidth}{R1 OSPFv3 Brief}
-\InsertFigure{Figures/R2OSPFBr.png}{0.75\textwidth}{R2 OSPFv3 Brief}
-\InsertFigure{Figures/WAN1OSPFBr.png}{0.75\textwidth}{WAN1 OSPFv3 Brief}
-\InsertFigure{Figures/WAN2OSPFBr.png}{0.75\textwidth}{WAN2 OSPFv3 Brief}
+\noindent do sh ospfv3 ipv6 int br
+\InsertFigure{Figures/OSPFv3_v6/R1BR.png}{0.75\textwidth}{R1 OSPFv3 Brief}
+\InsertFigure{Figures/OSPFv3_v6/R2BR.png}{0.75\textwidth}{R2 OSPFv3 Brief}
+\InsertFigure{Figures/OSPFv3_v6/WAN1BR.png}{0.75\textwidth}{WAN1 OSPFv3 Brief}
+\InsertFigure{Figures/OSPFv3_v6/WAN2BR.png}{0.75\textwidth}{WAN2 OSPFv3 Brief}
 
-
-\newpage
-\section{Link state}
-\label{sec:Sec10}
-žádné bodíky nebudou :(
 
 \newpage
 \section{Konektivita IPv4}
 \label{sec:Sec11}
 
 \subsection{Ping}
-\label{sec:Sec111}
+\label{subsec:Sec111}
+%TODO
 
 \subsection{Traceroute}
-\label{sec:Sec112}
-%TODO
+\label{subsec:Sec112}
 \InsertFigure{Figures/Traceroute4/Client-OUT1.png}{0.75\textwidth}{Client route to internet 1.0.0.1}
 \InsertFigure{Figures/Traceroute4/Client-OUT2.png}{0.75\textwidth}{Client route to internet 2.0.0.1}
 \InsertFigure{Figures/Traceroute4/Server-OUT1.png}{0.75\textwidth}{Server route to internet 1.0.0.1}
@@ -364,10 +378,10 @@
 
 \subsection{Ping}
 \label{sec:Sec121}
+%TODO
 
 \subsection{Traceroute}
 \label{sec:Sec122}
-%TODO
 \InsertFigure{Figures/Traceroute6/Client-OUT1.png}{0.75\textwidth}{Client route to internet 2001:9999:1000::1}
 \InsertFigure{Figures/Traceroute6/Client-OUT2.png}{0.75\textwidth}{Client route to internet 2001:9999:2000::1}
 \InsertFigure{Figures/Traceroute6/Server-OUT1.png}{0.75\textwidth}{Server route to internet 2001:9999:1000::1}
