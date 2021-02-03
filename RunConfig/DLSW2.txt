@@ -1,0 +1,179 @@
+Building configuration...
+
+Current configuration : 4564 bytes
+!
+! Last configuration change at 13:12:15 UTC Wed Feb 3 2021
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname DLSW2
+!
+boot-start-marker
+boot-end-marker
+!
+!
+vrf definition MGMT
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+no logging console
+enable password cisco
+!
+username grp9 password 0 cisco
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain-lookup
+ip domain-name sps.local
+ip cef
+no ipv6 cef
+!
+!
+!
+spanning-tree mode rapid-pvst
+spanning-tree extend system-id
+spanning-tree vlan 101-103 priority 28672
+spanning-tree vlan 301-303 priority 24576
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description loopback
+ ip address 44.9.254.1 255.255.255.255
+ ipv6 address 2001:9999::401/128
+!
+interface Port-channel1
+ description DLSW2-DLSW1
+ switchport trunk allowed vlan 18,101-103,301-303,999
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 999
+ switchport mode trunk
+!
+interface GigabitEthernet0/0
+ switchport trunk allowed vlan 998
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 999
+ switchport mode trunk
+ negotiation auto
+!
+interface GigabitEthernet0/1
+ description DLSW2-R2
+ switchport trunk allowed vlan 18,101-103,301-303,999
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 999
+ switchport mode trunk
+ negotiation auto
+!
+interface GigabitEthernet0/2
+ switchport trunk allowed vlan 18,101-103,301-303,999
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 999
+ switchport mode trunk
+ negotiation auto
+ channel-group 1 mode active
+!
+interface GigabitEthernet0/3
+ switchport trunk allowed vlan 18,101-103,301-303,999
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 999
+ switchport mode trunk
+ negotiation auto
+ channel-group 1 mode active
+!
+interface GigabitEthernet1/0
+ description DLSW2-ALSW1
+ switchport trunk allowed vlan 18,101-103,301-303,999
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 999
+ switchport mode trunk
+ negotiation auto
+ spanning-tree vlan 101-103 cost 5
+ spanning-tree vlan 301-303 cost 20
+!
+interface Vlan18
+ description VRF-MGMT
+ vrf forwarding MGMT
+ ip address 44.9.252.5 255.255.255.0
+!
+ip forward-protocol nd
+!
+ip http server
+ip http secure-server
+!
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!
+!
+access-list 1 permit any
+!
+!
+!
+!
+control-plane
+!
+banner exec ^C
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************^C
+banner incoming ^C
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************^C
+banner login ^C
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************^C
+!
+line con 0
+ exec-timeout 0 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ access-class 1 in vrf-also
+ password cisco
+ login local
+ transport input telnet ssh
+!
+!
+end

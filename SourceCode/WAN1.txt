@@ -168,11 +168,7 @@ match ip address 2
 set local-preference 120
 route-map RM_NEIGHBOROUT4 permit 20
 
-no access-list 1
 no access-list 2
-no ip prefix-list PL_NEIGHBORSECONDOUT4
-ip prefix-list PL_NEIGHBORSECONDOUT4 seq 10 permit 2.0.0.0/16
-access-list 1 permit 1.0.0.0 0.0.0.255
 access-list 2 permit 2.0.0.0 0.0.255.255
 
 no route-map RM_REDISTRIBUTE_IPV6

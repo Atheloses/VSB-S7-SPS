@@ -1,0 +1,345 @@
+Building configuration...
+
+Current configuration : 7945 bytes
+!
+! Last configuration change at 13:37:26 UTC Wed Feb 3 2021
+!
+version 15.9
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+vrf definition MGMT
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+no logging console
+enable password cisco
+!
+no aaa new-model
+!
+!
+!
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name sps.local
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+username grp9 password 0 cisco
+!
+redundancy
+!
+!
+track 31 ipv6 route 2001:9999:2::/64 reachability
+!
+track 32 ipv6 route 2001:9999:2:1::/64 reachability
+!
+track 33 ipv6 route 2001:9999:2:2::/64 reachability
+!
+track 301 ip route 44.9.247.0 255.255.255.128 reachability
+!
+track 302 ip route 44.9.247.128 255.255.255.192 reachability
+!
+track 303 ip route 44.9.247.192 255.255.255.240 reachability
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description loopback
+ ip address 44.9.254.3 255.255.255.255
+ ipv6 address 2001:9999::403/128
+ ospfv3 2 ipv6 area 0
+ ospfv3 1 ipv4 area 0
+!
+interface Loopback1
+ description VRF-Loopback
+ vrf forwarding MGMT
+ ip address 44.9.253.244 255.255.255.255
+!
+interface GigabitEthernet0/0
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ description R1-DLSW1
+ no ip address
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1.18
+ description VLAN-MA-18
+ encapsulation dot1Q 18
+ vrf forwarding MGMT
+ ip address 44.9.252.2 255.255.255.0
+ vrrp 18 ip 44.9.252.1
+ vrrp 18 priority 120
+!
+interface GigabitEthernet0/1.101
+ description VLAN-Klient-101
+ encapsulation dot1Q 101
+ ip address 44.9.0.2 255.255.255.128
+ standby version 2
+ standby 11 ipv6 2001:9999:1::/64
+ standby 11 priority 120
+ standby 11 preempt
+ standby 101 ip 44.9.0.1
+ standby 101 priority 120
+ standby 101 preempt
+ ipv6 address 2001:9999:1::1/64
+ ospfv3 2 ipv6 area 2
+ ospfv3 1 ipv4 area 1
+!
+interface GigabitEthernet0/1.102
+ description VLAN-Klient-102
+ encapsulation dot1Q 102
+ ip address 44.9.0.130 255.255.255.192
+ standby version 2
+ standby 12 ipv6 2001:9999:1:1::/64
+ standby 12 priority 120
+ standby 12 preempt
+ standby 102 ip 44.9.0.129
+ standby 102 priority 120
+ standby 102 preempt
+ ipv6 address 2001:9999:1:1::1/64
+ ospfv3 2 ipv6 area 2
+ ospfv3 1 ipv4 area 1
+!
+interface GigabitEthernet0/1.103
+ description VLAN-Klient-103
+ encapsulation dot1Q 103
+ ip address 44.9.0.194 255.255.255.240
+ standby version 2
+ standby 13 ipv6 2001:9999:1:2::/64
+ standby 13 priority 120
+ standby 13 preempt
+ standby 103 ip 44.9.0.193
+ standby 103 priority 120
+ standby 103 preempt
+ ipv6 address 2001:9999:1:2::1/64
+ ospfv3 2 ipv6 area 2
+ ospfv3 1 ipv4 area 1
+!
+interface GigabitEthernet0/1.301
+ description VLAN-Server-301
+ encapsulation dot1Q 301
+ ip address 44.9.247.2 255.255.255.128
+ standby version 2
+ standby 1 ip 44.9.247.1
+ standby 1 priority 150
+ standby 1 preempt
+ standby 1 track 301 decrement 30
+ standby 21 ipv6 2001:9999:2::/64
+ standby 21 priority 150
+ standby 21 preempt
+ standby 21 track 31 decrement 30
+ ipv6 address 2001:9999:2::1/64
+ ospfv3 2 ipv6 area 2
+ ospfv3 1 ipv4 area 1
+!
+interface GigabitEthernet0/1.302
+ description VLAN-Server-302
+ encapsulation dot1Q 302
+ ip address 44.9.247.130 255.255.255.192
+ standby version 2
+ standby 2 ip 44.9.247.129
+ standby 2 priority 150
+ standby 2 preempt
+ standby 2 track 302 decrement 30
+ standby 22 ipv6 2001:9999:2:1::/64
+ standby 22 priority 150
+ standby 22 preempt
+ standby 22 track 32 decrement 30
+ ipv6 address 2001:9999:2:1::1/64
+ ospfv3 2 ipv6 area 2
+ ospfv3 1 ipv4 area 1
+!
+interface GigabitEthernet0/1.303
+ description VLAN-Server-303
+ encapsulation dot1Q 303
+ ip address 44.9.247.194 255.255.255.240
+ standby version 2
+ standby 3 ip 44.9.247.193
+ standby 3 priority 150
+ standby 3 preempt
+ standby 3 track 303 decrement 30
+ standby 23 ipv6 2001:9999:2:2::/64
+ standby 23 priority 150
+ standby 23 preempt
+ standby 23 track 33 decrement 30
+ ipv6 address 2001:9999:2:2::1/64
+ ospfv3 2 ipv6 area 2
+ ospfv3 1 ipv4 area 1
+!
+interface GigabitEthernet0/2
+ no ip address
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/2.9
+ description R1-WAN2
+ encapsulation dot1Q 9
+ ip address 44.9.248.2 255.255.255.254
+ ipv6 address 2001:9999::3/127
+ ospfv3 2 ipv6 area 0
+ ospfv3 2 ipv6 cost 50
+ ospfv3 1 ipv4 area 0
+ ospfv3 1 ipv4 cost 50
+!
+interface GigabitEthernet0/2.91
+ description VLAN-M-91
+ encapsulation dot1Q 91
+ vrf forwarding MGMT
+ ip address 44.9.253.250 255.255.255.254
+!
+interface GigabitEthernet0/3
+ no ip address
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/3.9
+ description R1-WAN1
+ encapsulation dot1Q 9
+ ip address 44.9.248.0 255.255.255.254
+ ipv6 address 2001:9999::1/127
+ ospfv3 2 ipv6 area 0
+ ospfv3 2 ipv6 cost 10
+ ospfv3 1 ipv4 area 0
+ ospfv3 1 ipv4 cost 10
+!
+interface GigabitEthernet0/3.91
+ description VLAN-M-91
+ encapsulation dot1Q 91
+ vrf forwarding MGMT
+ ip address 44.9.253.248 255.255.255.254
+!
+!
+router eigrp 1
+ !
+ address-family ipv4 vrf MGMT 
+  network 44.9.252.0 0.0.0.255
+  network 44.9.253.244 0.0.0.0
+  network 44.9.253.248 0.0.0.1
+  network 44.9.253.250 0.0.0.1
+  autonomous-system 1
+ exit-address-family
+!
+router ospfv3 1
+ router-id 44.9.254.3
+ !
+ address-family ipv4 unicast
+  passive-interface default
+  no passive-interface GigabitEthernet0/2.9
+  no passive-interface GigabitEthernet0/3.9
+ exit-address-family
+!
+router ospfv3 2
+ router-id 44.9.254.3
+ !
+ address-family ipv6 unicast
+  passive-interface default
+  no passive-interface GigabitEthernet0/2.9
+  no passive-interface GigabitEthernet0/3.9
+ exit-address-family
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+ipv6 ioam timestamp
+!
+!
+access-list 1 permit any
+!
+control-plane
+!
+banner exec ^C
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************^C
+banner incoming ^C
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************^C
+banner login ^C
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************^C
+!
+line con 0
+ exec-timeout 0 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ access-class 1 in vrf-also
+ password cisco
+ login local
+ transport input telnet ssh
+!
+no scheduler allocate
+!
+end

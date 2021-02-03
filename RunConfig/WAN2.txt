@@ -1,0 +1,336 @@
+Building configuration...
+
+Current configuration : 8229 bytes
+!
+! Last configuration change at 13:37:44 UTC Wed Feb 3 2021
+!
+version 15.9
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname WAN2
+!
+boot-start-marker
+boot-end-marker
+!
+!
+vrf definition MGMT
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+no logging console
+enable password cisco
+!
+no aaa new-model
+!
+!
+!
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name sps.local
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+username grp9 password 0 cisco
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description loopback
+ ip address 44.9.254.6 255.255.255.255
+ ipv6 address 2001:9999::408/128
+ ospfv3 2 ipv6 area 0
+ ospfv3 1 ipv4 area 0
+!
+interface Loopback1
+ description VRF-Loopback
+ vrf forwarding MGMT
+ ip address 44.9.253.247 255.255.255.255
+!
+interface GigabitEthernet0/0
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ description WAN1-WAN2
+ ip address 44.9.248.9 255.255.255.254
+ duplex auto
+ speed auto
+ media-type rj45
+ ipv6 address 2001:9999::9/127
+ ospfv3 2 ipv6 area 0
+ ospfv3 2 ipv6 cost 10
+ ospfv3 1 ipv4 area 0
+ ospfv3 1 ipv4 cost 10
+!
+interface GigabitEthernet0/2
+ description WAN2-ISP2
+ ip address 44.9.248.12 255.255.255.254
+ duplex auto
+ speed auto
+ media-type rj45
+ ipv6 address 2001:9999::D/127
+!
+interface GigabitEthernet0/3
+ no ip address
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/3.9
+ description WAN2-R2
+ encapsulation dot1Q 9
+ ip address 44.9.248.7 255.255.255.254
+ ipv6 address 2001:9999::6/127
+ ospfv3 2 ipv6 area 0
+ ospfv3 2 ipv6 cost 50
+ ospfv3 1 ipv4 area 0
+ ospfv3 1 ipv4 cost 50
+!
+interface GigabitEthernet0/3.91
+ description VLAN-M-91
+ encapsulation dot1Q 91
+ vrf forwarding MGMT
+ ip address 44.9.253.255 255.255.255.254
+!
+interface GigabitEthernet0/4
+ no ip address
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/4.9
+ description WAN2-R1
+ encapsulation dot1Q 9
+ ip address 44.9.248.3 255.255.255.254
+ ipv6 address 2001:9999::2/127
+ ospfv3 2 ipv6 area 0
+ ospfv3 2 ipv6 cost 50
+ ospfv3 1 ipv4 area 0
+ ospfv3 1 ipv4 cost 50
+!
+interface GigabitEthernet0/4.91
+ description VLAN-M-91
+ encapsulation dot1Q 91
+ vrf forwarding MGMT
+ ip address 44.9.253.251 255.255.255.254
+!
+!
+router eigrp 1
+ !
+ address-family ipv4 vrf MGMT 
+  network 44.9.253.247 0.0.0.0
+  network 44.9.253.250 0.0.0.1
+  network 44.9.253.254 0.0.0.1
+  autonomous-system 1
+ exit-address-family
+!
+router ospfv3 1
+ router-id 44.9.254.6
+ !
+ address-family ipv4 unicast
+  passive-interface default
+  no passive-interface GigabitEthernet0/1
+  no passive-interface GigabitEthernet0/3.9
+  no passive-interface GigabitEthernet0/4.9
+  default-information originate always route-map RM_DEFAULT
+ exit-address-family
+!
+router ospfv3 2
+ router-id 44.9.254.6
+ !
+ address-family ipv6 unicast
+  passive-interface default
+  no passive-interface GigabitEthernet0/1
+  no passive-interface GigabitEthernet0/3.9
+  no passive-interface GigabitEthernet0/4.9
+  default-information originate always
+ exit-address-family
+!
+router bgp 9
+ bgp log-neighbor-changes
+ neighbor 2001:9999::C remote-as 100
+ neighbor 2001:9999::405 remote-as 9
+ neighbor 2001:9999::405 update-source Loopback0
+ neighbor 44.9.248.13 remote-as 100
+ neighbor 44.9.254.5 remote-as 9
+ neighbor 44.9.254.5 update-source Loopback0
+ !
+ address-family ipv4
+  aggregate-address 44.9.240.0 255.255.248.0 summary-only
+  aggregate-address 44.9.224.0 255.255.240.0 summary-only
+  aggregate-address 44.9.192.0 255.255.224.0 summary-only
+  aggregate-address 44.9.128.0 255.255.192.0 summary-only
+  aggregate-address 44.9.0.0 255.255.128.0 summary-only
+  redistribute ospfv3 1 route-map RM_REDISTRIBUTE_IPV4
+  no neighbor 2001:9999::C activate
+  no neighbor 2001:9999::405 activate
+  neighbor 44.9.248.13 activate
+  neighbor 44.9.248.13 route-map RM_INTERNETOUT4 out
+  neighbor 44.9.254.5 activate
+  neighbor 44.9.254.5 next-hop-self
+  neighbor 44.9.254.5 route-map RM_NEIGHBOROUT4 out
+ exit-address-family
+ !
+ address-family ipv6
+  redistribute ospf 2 route-map RM_REDISTRIBUTE_IPV6
+  aggregate-address 2001:9999:2::/48 summary-only
+  aggregate-address 2001:9999:1::/48 summary-only
+  neighbor 2001:9999::C activate
+  neighbor 2001:9999::C route-map RM_INTERNETOUT6 out
+  neighbor 2001:9999::405 activate
+  neighbor 2001:9999::405 next-hop-self
+  neighbor 2001:9999::405 route-map RM_NEIGHBOROUT6 out
+ exit-address-family
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+ip access-list standard REDISTRIBUTE_IPV4
+ deny   44.9.248.0 0.0.7.255
+ permit 44.9.0.0 0.0.255.255
+!
+!
+ip prefix-list PL_DEFAULT seq 10 permit 44.9.248.12/31
+!
+ip prefix-list PL_KLIENT4 seq 10 permit 44.9.0.0/17
+!
+ip prefix-list PL_SERVER4 seq 10 permit 44.9.240.0/21
+ipv6 ioam timestamp
+!
+!
+ipv6 prefix-list PL_KLIENT6 seq 10 permit 2001:9999:1::/48
+!
+ipv6 prefix-list PL_NEIGHBOROUT6 seq 10 permit 2001:9999:2000::/48
+!
+ipv6 prefix-list PL_SERVER6 seq 10 permit 2001:9999:2::/48
+route-map RM_DEFAULT permit 10
+ match ip address prefix-list PL_DEFAULT
+!
+route-map RM_INTERNETOUT4 permit 10
+ match ip address prefix-list PL_SERVER4
+ set as-path prepend 9
+!
+route-map RM_INTERNETOUT4 permit 20
+ match ip address prefix-list PL_KLIENT4
+!
+route-map RM_INTERNETOUT6 permit 10
+ match ipv6 address prefix-list PL_SERVER6
+ set as-path prepend 9
+!
+route-map RM_INTERNETOUT6 permit 20
+ match ipv6 address prefix-list PL_KLIENT6
+!
+route-map RM_NEIGHBOROUT4 permit 10
+ match ip address 1
+ set local-preference 120
+!
+route-map RM_NEIGHBOROUT4 permit 20
+!
+route-map RM_NEIGHBOROUT6 permit 10
+ match ipv6 address prefix-list PL_NEIGHBOROUT6
+ set local-preference 120
+!
+route-map RM_NEIGHBOROUT6 permit 20
+!
+route-map RM_REDISTRIBUTE_IPV4 permit 10
+ match ip address REDISTRIBUTE_IPV4
+!
+route-map RM_REDISTRIBUTE_IPV6 permit 10
+ match ipv6 address REDISTRIBUTE_IPV6
+!
+!
+access-list 1 permit 1.0.0.0 0.0.0.255
+!
+ipv6 access-list REDISTRIBUTE_IPV6
+ permit ipv6 2001:9999:1::/48 any
+ permit ipv6 2001:9999:2::/48 any
+!
+control-plane
+!
+banner exec ^C
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************^C
+banner incoming ^C
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************^C
+banner login ^C
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************^C
+!
+line con 0
+ exec-timeout 0 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ access-class 1 in vrf-also
+ password cisco
+ login local
+ transport input telnet ssh
+!
+no scheduler allocate
+!
+end

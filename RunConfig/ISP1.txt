@@ -1,0 +1,183 @@
+Building configuration...
+
+Current configuration : 4186 bytes
+!
+! Last configuration change at 13:37:53 UTC Wed Feb 3 2021
+!
+version 15.9
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname ISP1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+no logging console
+!
+no aaa new-model
+!
+!
+!
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description loopback
+ ip address 44.9.254.7 255.255.255.255
+ ipv6 address 2001:9999::407/128
+!
+interface Loopback100
+ description ToJsouTyInternety
+ ip address 1.0.0.1 255.0.0.0
+ ipv6 address 2001:9999:1000::1/48
+!
+interface GigabitEthernet0/0
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ description ISP1-ISP2
+ ip address 44.9.248.14 255.255.255.254
+ duplex auto
+ speed auto
+ media-type rj45
+ ipv6 address 2001:9999::E/127
+!
+interface GigabitEthernet0/2
+ description ISP1-WAN1
+ ip address 44.9.248.11 255.255.255.254
+ duplex auto
+ speed auto
+ media-type rj45
+ ipv6 address 2001:9999::A/127
+!
+interface GigabitEthernet0/3
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+router bgp 100
+ bgp log-neighbor-changes
+ neighbor 2001:9999::B remote-as 9
+ neighbor 2001:9999::408 remote-as 100
+ neighbor 2001:9999::408 update-source Loopback0
+ neighbor 44.9.248.10 remote-as 9
+ neighbor 44.9.254.8 remote-as 100
+ neighbor 44.9.254.8 update-source Loopback0
+ !
+ address-family ipv4
+  network 1.0.0.0
+  no neighbor 2001:9999::B activate
+  no neighbor 2001:9999::408 activate
+  neighbor 44.9.248.10 activate
+  neighbor 44.9.254.8 activate
+  neighbor 44.9.254.8 next-hop-self
+ exit-address-family
+ !
+ address-family ipv6
+  network 2001:9999:1000::/48
+  neighbor 2001:9999::B activate
+  neighbor 2001:9999::408 activate
+  neighbor 2001:9999::408 next-hop-self
+ exit-address-family
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip route 44.9.254.8 255.255.255.255 44.9.248.15
+!
+ipv6 route 2001:9999::408/128 2001:9999::F
+ipv6 ioam timestamp
+!
+!
+!
+control-plane
+!
+banner exec ^C
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************^C
+banner incoming ^C
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************^C
+banner login ^C
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************^C
+!
+line con 0
+ exec-timeout 0 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ login
+ transport input none
+!
+no scheduler allocate
+!
+end

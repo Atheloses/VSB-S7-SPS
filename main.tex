@@ -12,13 +12,13 @@
 
 \SubmissionDate{3. ledna 2021}
 
-\CzechAbstract{SPS}
+\CzechAbstract{Semestrální projekt do předmětu SPS v 1. semestru navazujícího magisterského studia. Projekt obsahuje}
 
-\CzechKeywords{SPS, IPv4, IPv6, OSPFv3, BGP, Spanning Tree, STP, BGP, Aggregation, Management, VRF, }
+\CzechKeywords{SPS, IPv4, IPv6, OSPFv3, BGP, Spanning Tree, STP, RPVST+, Agregace, VRF MGMT, Konvergence, FHRP, Standby, VRRP, PortChannel}
 
 \EnglishAbstract{SPS}
 
-\EnglishKeywords{SPS}
+\EnglishKeywords{SPS, IPv4, IPv6, OSPFv3, BGP, Spanning Tree, STP, RPVST+, Aggregation, VRF MGMT, Convergence, FHRP, Standby, VRRP, PortChannel}
 
 \newcolumntype{d}[1]{D{,}{,}{#1}}
 
@@ -221,18 +221,19 @@
 
 \InsertFigure{Figures/Addressing/IPv6.png}{0.75\textwidth}{IPv6 addressing}
 
-\subsection{Reconvergence}
+\subsection{Convergence}
 \label{subsec:Sec043}
 \noindent Routing from client to 2.0.0.1/2001:9999:2000::1 prefers route through R2-WAN1-ISP1-ISP2
-\noindent STP - took s
-%\InsertFigure{Figures/Reconvergence/IPv4.png}{0.75\textwidth}{IPv4 reconvergence}
-%\InsertFigure{Figures/Reconvergence/IPv6.png}{0.75\textwidth}{IPv6 reconvergence}
+\noindent standby took 0s
+\noindent STP - took 6s
+\InsertFigure{Figures/Convergence/SIPv4.png}{0.75\textwidth}{IPv4 STP convergence}
+\InsertFigure{Figures/Convergence/SIPv6.png}{0.75\textwidth}{IPv6 STP Convergence}
 \noindent OSPFv3 - took 5s
-\InsertFigure{Figures/Reconvergence/IPv4.png}{0.75\textwidth}{IPv4 reconvergence}
-\InsertFigure{Figures/Reconvergence/IPv6.png}{0.75\textwidth}{IPv6 reconvergence}
-\noindent BGP - took s
-%\InsertFigure{Figures/Reconvergence/IPv4.png}{0.75\textwidth}{IPv4 reconvergence}
-%\InsertFigure{Figures/Reconvergence/IPv6.png}{0.75\textwidth}{IPv6 reconvergence}
+\InsertFigure{Figures/Convergence/OIPv4.png}{0.75\textwidth}{IPv4 OSPFv3 convergence}
+\InsertFigure{Figures/Convergence/OIPv6.png}{0.75\textwidth}{IPv6 OSPFv3 convergence}
+\noindent BGP - took 180s
+\InsertFigure{Figures/Convergence/BIPv4.png}{0.75\textwidth}{IPv4 BGP convergence}
+\InsertFigure{Figures/Convergence/BIPv6.png}{0.75\textwidth}{IPv6 BGP convergence}
 
 
 \newpage
@@ -303,7 +304,7 @@
 \InsertFigure{Figures/Management/R2VRRP.png}{0.75\textwidth}{R2 IPv4 VRRP}
 
 \subsection{IPv4}
-\label{subsec:Sec111}
+\label{subsec:Sec101}
 \noindent do sh ip int br
 \InsertFigure{Figures/Int4/ISP1.png}{0.75\textwidth}{ISP1 IPv4 interface brief}
 \InsertFigure{Figures/Int4/ISP2.png}{0.75\textwidth}{ISP2 IPv4 interface brief}
@@ -330,7 +331,7 @@
 \InsertFigure{Figures/OSPFv3_v4/WAN2BR.png}{0.75\textwidth}{WAN2 OSPFv3 Brief}
 
 \subsection{IPv6}
-\label{subsec:Sec112}
+\label{subsec:Sec102}
 \noindent do sh ipv6 int br
 \InsertFigure{Figures/Int6/ISP1.png}{0.75\textwidth}{ISP1 IPv6 interface brief}
 \InsertFigure{Figures/Int6/ISP2.png}{0.75\textwidth}{ISP2 IPv6 interface brief}
@@ -368,23 +369,24 @@
 \subsection{Ping}
 \label{subsec:Sec111}
 \noindent ping from client to each VLAN's interface on ALSW1
-%\InsertFigure{Figures/Ping4/C101.png}{0.75\textwidth}{Client IPv4 ping to VLAN 101}
-%\InsertFigure{Figures/Ping4/C102.png}{0.75\textwidth}{Client IPv4 ping to VLAN 102}
-%\InsertFigure{Figures/Ping4/C103.png}{0.75\textwidth}{Client IPv4 ping to VLAN 103}
-%\InsertFigure{Figures/Ping4/C301.png}{0.75\textwidth}{Client IPv4 ping to VLAN 301}
-%\InsertFigure{Figures/Ping4/C302.png}{0.75\textwidth}{Client IPv4 ping to VLAN 302}
-%\InsertFigure{Figures/Ping4/C303.png}{0.75\textwidth}{Client IPv4 ping to VLAN 303}
+\InsertFigure{Figures/Ping4/C101.png}{0.75\textwidth}{Client IPv4 ping to VLAN 101}
+\InsertFigure{Figures/Ping4/C102.png}{0.75\textwidth}{Client IPv4 ping to VLAN 102}
+\InsertFigure{Figures/Ping4/C103.png}{0.75\textwidth}{Client IPv4 ping to VLAN 103}
+\InsertFigure{Figures/Ping4/C301.png}{0.75\textwidth}{Client IPv4 ping to VLAN 301}
+\InsertFigure{Figures/Ping4/C302.png}{0.75\textwidth}{Client IPv4 ping to VLAN 302}
+\InsertFigure{Figures/Ping4/C303.png}{0.75\textwidth}{Client IPv4 ping to VLAN 303}
 
 \noindent ping from server to each VLAN's interface on ALSW1
-%\InsertFigure{Figures/Ping4/S101.png}{0.75\textwidth}{Server IPv4 ping to VLAN 101}
-%\InsertFigure{Figures/Ping4/S102.png}{0.75\textwidth}{Server IPv4 ping to VLAN 102}
-%\InsertFigure{Figures/Ping4/S103.png}{0.75\textwidth}{Server IPv4 ping to VLAN 103}
-%\InsertFigure{Figures/Ping4/S301.png}{0.75\textwidth}{Server IPv4 ping to VLAN 301}
-%\InsertFigure{Figures/Ping4/S302.png}{0.75\textwidth}{Server IPv4 ping to VLAN 302}
-%\InsertFigure{Figures/Ping4/S303.png}{0.75\textwidth}{Server IPv4 ping to VLAN 303}
+\InsertFigure{Figures/Ping4/S101.png}{0.75\textwidth}{Server IPv4 ping to VLAN 101}
+\InsertFigure{Figures/Ping4/S102.png}{0.75\textwidth}{Server IPv4 ping to VLAN 102}
+\InsertFigure{Figures/Ping4/S103.png}{0.75\textwidth}{Server IPv4 ping to VLAN 103}
+\InsertFigure{Figures/Ping4/S301.png}{0.75\textwidth}{Server IPv4 ping to VLAN 301}
+\InsertFigure{Figures/Ping4/S302.png}{0.75\textwidth}{Server IPv4 ping to VLAN 302}
+\InsertFigure{Figures/Ping4/S303.png}{0.75\textwidth}{Server IPv4 ping to VLAN 303}
 
 \subsection{Telnet}
 \label{subsec:Sec112}
+\noindent connection to VRF Telnet
 \InsertFigure{Figures/Telnet4/WAN1.png}{0.75\textwidth}{WAN1 IPv4 Telnet}
 \InsertFigure{Figures/Telnet4/WAN2.png}{0.75\textwidth}{WAN2 IPv4 Telnet}
 \InsertFigure{Figures/Telnet4/R1.png}{0.75\textwidth}{R1 IPv4 Telnet}
@@ -395,6 +397,7 @@
 
 \subsection{SSH}
 \label{subsec:Sec113}
+\noindent connection to VRF SSH
 \InsertFigure{Figures/SSH4/WAN1.png}{0.75\textwidth}{WAN1 IPv4 SSH}
 \InsertFigure{Figures/SSH4/WAN2.png}{0.75\textwidth}{WAN2 IPv4 SSH}
 \InsertFigure{Figures/SSH4/R1.png}{0.75\textwidth}{R1 IPv4 SSH}
@@ -418,40 +421,20 @@
 \subsection{Ping}
 \label{sec:Sec121}
 \noindent ping from client to each VLAN's interface on ALSW1
-%\InsertFigure{Figures/Ping6/C101.png}{0.75\textwidth}{Client IPv4 ping to VLAN 101}
-%\InsertFigure{Figures/Ping6/C102.png}{0.75\textwidth}{Client IPv4 ping to VLAN 102}
-%\InsertFigure{Figures/Ping6/C103.png}{0.75\textwidth}{Client IPv4 ping to VLAN 103}
-%\InsertFigure{Figures/Ping6/C301.png}{0.75\textwidth}{Client IPv4 ping to VLAN 301}
-%\InsertFigure{Figures/Ping6/C302.png}{0.75\textwidth}{Client IPv4 ping to VLAN 302}
-%\InsertFigure{Figures/Ping6/C303.png}{0.75\textwidth}{Client IPv4 ping to VLAN 303}
+\InsertFigure{Figures/Ping6/C101.png}{0.75\textwidth}{Client IPv4 ping to VLAN 101}
+\InsertFigure{Figures/Ping6/C102.png}{0.75\textwidth}{Client IPv4 ping to VLAN 102}
+\InsertFigure{Figures/Ping6/C103.png}{0.75\textwidth}{Client IPv4 ping to VLAN 103}
+\InsertFigure{Figures/Ping6/C301.png}{0.75\textwidth}{Client IPv4 ping to VLAN 301}
+\InsertFigure{Figures/Ping6/C302.png}{0.75\textwidth}{Client IPv4 ping to VLAN 302}
+\InsertFigure{Figures/Ping6/C303.png}{0.75\textwidth}{Client IPv4 ping to VLAN 303}
 
 \noindent ping from server to each VLAN's interface on ALSW1
-%\InsertFigure{Figures/Ping6/S101.png}{0.75\textwidth}{Server IPv4 ping to VLAN 101}
-%\InsertFigure{Figures/Ping6/S102.png}{0.75\textwidth}{Server IPv4 ping to VLAN 102}
-%\InsertFigure{Figures/Ping6/S103.png}{0.75\textwidth}{Server IPv4 ping to VLAN 103}
-%\InsertFigure{Figures/Ping6/S301.png}{0.75\textwidth}{Server IPv4 ping to VLAN 301}
-%\InsertFigure{Figures/Ping6/S302.png}{0.75\textwidth}{Server IPv4 ping to VLAN 302}
-%\InsertFigure{Figures/Ping6/S303.png}{0.75\textwidth}{Server IPv4 ping to VLAN 303}
-
-\subsection{Telnet}
-\label{subsec:Sec122}
-%\InsertFigure{Figures/Telnet6/WAN1.png}{0.75\textwidth}{WAN1 IPv6 Telnet}
-%\InsertFigure{Figures/Telnet6/WAN2.png}{0.75\textwidth}{WAN2 IPv6 Telnet}
-%\InsertFigure{Figures/Telnet6/R1.png}{0.75\textwidth}{R1 IPv6 Telnet}
-%\InsertFigure{Figures/Telnet6/R2.png}{0.75\textwidth}{R2 IPv6 Telnet}
-%\InsertFigure{Figures/Telnet6/DLSW1.png}{0.75\textwidth}{DLSW1 IPv6 Telnet}
-%\InsertFigure{Figures/Telnet6/DLSW2.png}{0.75\textwidth}{DLSW2 IPv6 Telnet}
-%\InsertFigure{Figures/Telnet6/ALSW1.png}{0.75\textwidth}{ALSW1 IPv6 Telnet}
-
-\subsection{SSH}
-\label{subsec:Sec123}
-%\InsertFigure{Figures/SSH6/WAN1.png}{0.75\textwidth}{WAN1 IPv6 SSH}
-%\InsertFigure{Figures/SSH6/WAN2.png}{0.75\textwidth}{WAN2 IPv6 SSH}
-%\InsertFigure{Figures/SSH6/R1.png}{0.75\textwidth}{R1 IPv6 SSH}
-%\InsertFigure{Figures/SSH6/R2.png}{0.75\textwidth}{R2 IPv6 SSH}
-%\InsertFigure{Figures/SSH6/DLSW1.png}{0.75\textwidth}{DLSW1 IPv6 SSH}
-%\InsertFigure{Figures/SSH6/DLSW2.png}{0.75\textwidth}{DLSW2 IPv6 SSH}
-%\InsertFigure{Figures/SSH6/ALSW1.png}{0.75\textwidth}{ALSW1 IPv6 SSH}
+\InsertFigure{Figures/Ping6/S101.png}{0.75\textwidth}{Server IPv4 ping to VLAN 101}
+\InsertFigure{Figures/Ping6/S102.png}{0.75\textwidth}{Server IPv4 ping to VLAN 102}
+\InsertFigure{Figures/Ping6/S103.png}{0.75\textwidth}{Server IPv4 ping to VLAN 103}
+\InsertFigure{Figures/Ping6/S301.png}{0.75\textwidth}{Server IPv4 ping to VLAN 301}
+\InsertFigure{Figures/Ping6/S302.png}{0.75\textwidth}{Server IPv4 ping to VLAN 302}
+\InsertFigure{Figures/Ping6/S303.png}{0.75\textwidth}{Server IPv4 ping to VLAN 303}
 
 \subsection{Traceroute}
 \label{sec:Sec124}
@@ -460,5 +443,26 @@
 \InsertFigure{Figures/Traceroute6/Server-OUT1.png}{0.75\textwidth}{Server route to internet 2001:9999:1000::1}
 \InsertFigure{Figures/Traceroute6/Server-OUT2.png}{0.75\textwidth}{Server route to internet 2001:9999:2000::1}
 
+
+\newpage
+\section{Run Configs}
+\label{sec:Sec14}
+\InsertText{ALSW1 run config}{RunConfig/ALSW1.txt}
+\newpage
+\InsertText{DLSW1 run config}{RunConfig/DLSW1.txt}
+\newpage
+\InsertText{DLSW2 run config}{RunConfig/DLSW2.txt}
+\newpage
+\InsertText{R1 run config}{RunConfig/R1.txt}
+\newpage
+\InsertText{R2 run config}{RunConfig/R2.txt}
+\newpage
+\InsertText{WAN1 run config}{RunConfig/WAN1.txt}
+\newpage
+\InsertText{WAN2 run config}{RunConfig/WAN2.txt}
+\newpage
+\InsertText{ISP1 run config}{RunConfig/ISP1.txt}
+\newpage
+\InsertText{ISP2 run config}{RunConfig/ISP2.txt}
 
 \end{document}
